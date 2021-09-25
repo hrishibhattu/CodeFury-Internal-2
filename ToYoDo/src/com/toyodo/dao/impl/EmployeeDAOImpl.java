@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -87,14 +88,22 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		Order order = null;
-		final String strsql = "SELECT * FROM `order`";
+		final String strsql = "SELECT * FROM `order` INNER JOIN `customer` ON `order`.`customer_id` = `customer`.`customer_id`";
 		try {
 			ps = con.prepareStatement(strsql);
 			rs = ps.executeQuery();
+
 			while (rs.next()) {
+				String currOrderId = rs.getString("order_id");
+				String getProductsQuery = "SELECT * FROM `order_product_util` WHERE `order_id`=" + currOrderId;
+				Statement stmt = con.createStatement();
+				ResultSet rs1 = stmt.executeQuery(getProductsQuery);
+				String listOfProducts = "";
+				while (rs1.next()) {
+					listOfProducts += " " + rs1.getString("product_id");
+				}
 				order = new Order(rs.getString("order_id"), rs.getDate("order_date"), rs.getTimestamp("order_datetime"),
-						rs.getString("customer_id"), rs.getString("customer_name"),
-						rs.getString("customer_shipping_address"), rs.getString("list_of_products"),
+						rs.getString("customer_id"), rs.getString("name"), rs.getString("address"), listOfProducts,
 						rs.getDouble("total_order_value"), rs.getDouble("shipping_cost"),
 						rs.getString("shipping_agency"), rs.getString("status"));
 				listOrder.add(order);
@@ -121,27 +130,47 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 	}
 
 	@Override
-	public int addOrder(Order order) {
+	public int createQuote(Order order) {
 		createConnection();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		final String strsql = "INSERT INTO `order`(`order_date`, `order_datetime`, `customer_id`, `customer_name`, `customer_shipping_address`, `list_of_products`, `total_order_value`, `shipping_cost`, `shipping_agency`, `status`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		
+		final String strsql = "INSERT INTO `order`(`order_date`, `order_datetime`, `customer_id`, `total_order_value`, `shipping_cost`, `shipping_agency`, `status`) VALUES (?, ?, ?, ?, ?, ?, ?)";
+//		String utilTable = "INSERT INTO `customer_order_invoice` (`customer_id`) VALUES (?)";
+//		String utilTable = "INSERT INTO `customer_order_invoice` (`customer_id`) VALUES (?)";
 		try {
 			ps = con.prepareStatement(strsql);
 			ps.setDate(1, order.getOrderDate());
 			ps.setTimestamp(2, order.getOrderDatetime());
 			ps.setString(3, order.getCustomerID());
-			ps.setString(4, order.getCustomerName());
-			ps.setString(5, order.getCustomerShippingAddress());
-			ps.setString(6, order.getListOfProducts());
-			ps.setDouble(7, order.getTotalOrderValue());
-			ps.setDouble(8, order.getShippingCost());
-			ps.setString(9, order.getShippingAgency());
-			ps.setString(10, order.getStatus());
+//			ps.setString(4, order.getCustomerName());
+//			ps.setString(5, order.getCustomerShippingAddress());
+//			ps.setString(6, order.getListOfProducts());
+			ps.setDouble(4, order.getTotalOrderValue());
+			ps.setDouble(5, order.getShippingCost());
+			ps.setString(6, order.getShippingAgency());
+			ps.setString(7, order.getStatus());
 			System.out.println(ps);
 			if (ps.executeUpdate() > 0) {
-				return 1;
+				System.out.println("Done");
 			}
+			String getOrderId = "SELECT `order_id` FROM `order` WHERE `order_datetime` = " + order.getOrderDatetime().toString();
+			ResultSet rs2 = ps.executeQuery(getOrderId);
+			int order_id = 0;
+			while(rs2.next()) {
+				order_id = rs2.getInt("order_id");
+			}
+			String listOfProducts = order.getListOfProducts();
+			String[] products = listOfProducts.split(" ");
+			PreparedStatement ps1;
+			for(String product: products) {
+				String insertProduct = "INSERT INTO `order_product_util` (order_id, product_id) VALUES (?, ?)";
+				ps1 = con.prepareStatement(insertProduct);
+				ps1.setInt(1, order_id);
+				ps1.setString(2, product);
+				ps1.executeUpdate();
+			}
+			
 		} catch (SQLException sqlex) {
 			System.out.println(sqlex);
 		} finally {
@@ -203,112 +232,112 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 		return listProducts;
 	}
 
-	@Override
-	public int createQuote(Quote quote) {
-		createConnection();
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		final String strsql = "INSERT INTO `quote` (`order_date`, `customer_id`, `customer_name`, `customer_gst_no`, `customer_shipping_address`, `customer_city`, `customer_phone_number`, `customer_email`, `customer_pincode`, `shipping_cost`, `total_order_value`, `status`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-		try {
-			ps = con.prepareStatement(strsql);
-			ps.setDate(1, quote.getOrder_date());
-			ps.setString(2, quote.getCustomer_id());
-			ps.setString(3, quote.getCustomer_name());
-			ps.setString(4, quote.getCustomer_gst_no());
-			ps.setString(5, quote.getCustomer_shipping_address());
-			ps.setString(6, quote.getCustomer_city());
-			ps.setString(7, quote.getCustomer_phone_number());
-			ps.setString(8, quote.getCustomer_email());
-			ps.setInt(9, quote.getCustomer_pincode());
-			ps.setDouble(10, quote.getShipping_cost());
-			ps.setDouble(11, quote.getTotal_order_value());
-			ps.setString(12, quote.getStatus());
-			System.out.println(ps);
-			if (ps.executeUpdate() > 0) {
-				return 1;
-			}
-		} catch (SQLException sqlex) {
-			System.out.println(sqlex);
-		} finally {
-			if (ps != null) {
-				try {
-					ps.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-		return 0;
-	}
+//	@Override
+//	public int createQuote(Quote quote) {
+//		createConnection();
+//		PreparedStatement ps = null;
+//		ResultSet rs = null;
+//		final String strsql = "INSERT INTO `order` (`order_date`, `customer_id`, `customer_name`, `customer_gst_no`, `customer_shipping_address`, `customer_city`, `customer_phone_number`, `customer_email`, `customer_pincode`, `shipping_cost`, `total_order_value`, `status`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+//		try {
+//			ps = con.prepareStatement(strsql);
+//			ps.setDate(1, quote.getOrder_date());
+//			ps.setString(2, quote.getCustomer_id());
+//			ps.setString(3, quote.getCustomer_name());
+//			ps.setString(4, quote.getCustomer_gst_no());
+//			ps.setString(5, quote.getCustomer_shipping_address());
+//			ps.setString(6, quote.getCustomer_city());
+//			ps.setString(7, quote.getCustomer_phone_number());
+//			ps.setString(8, quote.getCustomer_email());
+//			ps.setInt(9, quote.getCustomer_pincode());
+//			ps.setDouble(10, quote.getShipping_cost());
+//			ps.setDouble(11, quote.getTotal_order_value());
+//			ps.setString(12, quote.getStatus());
+//			System.out.println(ps);
+//			if (ps.executeUpdate() > 0) {
+//				return 1;
+//			}
+//		} catch (SQLException sqlex) {
+//			System.out.println(sqlex);
+//		} finally {
+//			if (ps != null) {
+//				try {
+//					ps.close();
+//				} catch (SQLException e) {
+//					e.printStackTrace();
+//				}
+//			}
+//			if (rs != null) {
+//				try {
+//					rs.close();
+//				} catch (SQLException e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		}
+//		return 0;
+//	}
 
-	@Override
-	public List<Quote> viewQuote() {
-		createConnection();
-		// clear the previous record on every request to avoid appending list of orders
-		if (!listQuote.isEmpty())
-			listQuote.clear();
-
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		Quote quote = null;
-		final String strsql = "SELECT * FROM `quote`";
-		try {
-			ps = con.prepareStatement(strsql);
-			rs = ps.executeQuery();
-			while (rs.next()) {
-				quote = new Quote(rs.getDate("order_date"), rs.getString("customer_id"), rs.getString("customer_name"),
-						rs.getString("customer_gst_no"), rs.getString("customer_shipping_address"),
-						rs.getString("customer_city"), rs.getString("customer_phone_number"),
-						rs.getString("customer_email"), rs.getInt("customer_pincode"), rs.getDouble("shipping_cost"),
-						rs.getDouble("total_order_value"), rs.getString("status"));
-				listQuote.add(quote);
-			}
-		} catch (SQLException sqlex) {
-			System.out.println(sqlex);
-		} finally {
-			if (ps != null) {
-				try {
-					ps.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-		return listQuote;
-	}
+//	@Override
+//	public List<Quote> viewQuote() {
+//		createConnection();
+//		// clear the previous record on every request to avoid appending list of orders
+//		if (!listQuote.isEmpty())
+//			listQuote.clear();
+//
+//		PreparedStatement ps = null;
+//		ResultSet rs = null;
+//		Quote quote = null;
+//		final String strsql = "SELECT * FROM `quote`";
+//		try {
+//			ps = con.prepareStatement(strsql);
+//			rs = ps.executeQuery();
+//			while (rs.next()) {
+//				quote = new Quote(rs.getDate("order_date"), rs.getString("customer_id"), rs.getString("customer_name"),
+//						rs.getString("customer_gst_no"), rs.getString("customer_shipping_address"),
+//						rs.getString("customer_city"), rs.getString("customer_phone_number"),
+//						rs.getString("customer_email"), rs.getInt("customer_pincode"), rs.getDouble("shipping_cost"),
+//						rs.getDouble("total_order_value"), rs.getString("status"));
+//				listQuote.add(quote);
+//			}
+//		} catch (SQLException sqlex) {
+//			System.out.println(sqlex);
+//		} finally {
+//			if (ps != null) {
+//				try {
+//					ps.close();
+//				} catch (SQLException e) {
+//					e.printStackTrace();
+//				}
+//			}
+//			if (rs != null) {
+//				try {
+//					rs.close();
+//				} catch (SQLException e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		}
+//		return listQuote;
+//	}
 
 	@Override
 	public int createInvoice(Invoice invoice) {
 		createConnection();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		final String strsql = "INSERT INTO `invoice` (`invoice_date`, `order_datetime`, `customer_id`, `customer_name`, `list_of_products`, `gst`, `type_of_gst`, `total_gst_amount`, `total_invoice_value`, `status`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		final String strsql = "INSERT INTO `invoice` (`invoice_date`, `order_datetime`, `customer_id`, `gst`, `type_of_gst`, `total_gst_amount`, `total_invoice_value`, `status`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 		try {
 			ps = con.prepareStatement(strsql);
 			ps.setDate(1, invoice.getInvoiceDate());
 			ps.setTimestamp(2, invoice.getOrderDatetime());
 			ps.setString(3, invoice.getCustomerID());
-			ps.setString(4, invoice.getCustomerName());
-			ps.setString(5, invoice.getListOfProducts());
-			ps.setDouble(6, invoice.getGst());
-			ps.setString(7, invoice.getTypeOfGST());
-			ps.setDouble(8, invoice.getTotalGSTAmount());
-			ps.setDouble(9, invoice.getTotalInvoiceValue());
-			ps.setString(10, invoice.getStatus());
+//			ps.setString(4, invoice.getCustomerName());
+//			ps.setString(5, invoice.getListOfProducts());
+			ps.setDouble(4, invoice.getGst());
+			ps.setString(5, invoice.getTypeOfGST());
+			ps.setDouble(6, invoice.getTotalGSTAmount());
+			ps.setDouble(7, invoice.getTotalInvoiceValue());
+			ps.setString(8, invoice.getStatus());
 			System.out.println(ps);
 			if (ps.executeUpdate() > 0) {
 				return 1;
@@ -332,6 +361,35 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 			}
 		}
 		return 0;
+	}
+	
+	@Override
+	public void importProducts(List<Products> products) {
+		createConnection();
+		PreparedStatement ps = null;
+		String insertSql = "INSERT INTO products VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE name=?, price=?, category=?";
+		try {
+			ps = con.prepareStatement(insertSql);
+			for(Products p: products) {
+				ps.setString(1, p.getProductID());
+				ps.setString(2, p.getName());
+				ps.setDouble(3, p.getPrice());
+				ps.setString(4, p.getCategory());
+				ps.setString(5, p.getName());
+				ps.setDouble(6, p.getPrice());
+				ps.setString(7, p.getCategory());
+				ps.execute();
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				ps.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	@Override

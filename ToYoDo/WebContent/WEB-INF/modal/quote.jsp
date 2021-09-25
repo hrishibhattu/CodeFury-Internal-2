@@ -1,4 +1,3 @@
-<!-- modal to view quote -->
 
 <div class="modal fade" id="viewQuoteModal" tabindex="-1" role="dialog"
 	aria-labelledby="quoteModalCenterTitle" aria-hidden="true">
@@ -28,9 +27,9 @@
 						<tbody>
 
 
-							<%
-								List<Quote> viewQuote = employeeService.viewQuote();
-								for (Quote quote : viewQuote) {
+							<%-- <%
+							List<Quote> viewQuote = employeeService.viewQuote();
+							for (Quote quote : viewQuote) {
 							%>
 
 							<tr>
@@ -44,8 +43,8 @@
 
 
 							<%
-								}
-							%>
+							}
+							%> --%>
 
 						</tbody>
 					</table>

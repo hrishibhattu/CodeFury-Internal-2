@@ -28,12 +28,13 @@ function UpdateCartTotal() {
 	var total = 0;
 	var total_cost = 0;
 	
+	
 	for (var i = 0; i < cartrows.length; i++) {
 		var cr = cartrows[i]
 		var priceelement = cr.getElementsByClassName("product-price")[0]
 		// console.log(priceelement)
 		var qu = cr.getElementsByClassName("product-quantity")[0]
-
+		
 		var category = cr.getElementsByClassName("product-category")[0]
 
 		console.log(priceelement, qu, category)

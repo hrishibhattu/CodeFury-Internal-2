@@ -15,13 +15,15 @@ public interface EmployeeDAO {
 
 	List<Order> listOrder();
 
-	int addOrder(Order order);
+	int createQuote(Order order);
 
 	List<Products> listProducts();
 
-	int createQuote(Quote quote);
+//	int createQuote(Quote quote);
 
-	List<Quote> viewQuote();
+//	List<Quote> viewQuote();
+	
+	public void importProducts(List<Products> products);
 
 	int createInvoice(Invoice invoice);
 

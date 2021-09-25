@@ -30,24 +30,29 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 
 	@Override
-	public int addOrder(Order order) {
-		return employeeDAO.addOrder(order);
+	public int createQuote(Order order) {
+		return employeeDAO.createQuote(order);
 	}
 
 	@Override
 	public List<Products> listProducts() {
 		return employeeDAO.listProducts();
 	}
-
+	
 	@Override
-	public int createQuote(Quote quote) {
-		return employeeDAO.createQuote(quote);
+	public void importProducts(List<Products> products) {
+		employeeDAO.importProducts(products);
 	}
 
-	@Override
-	public List<Quote> viewQuote() {
-		return employeeDAO.viewQuote();
-	}
+//	@Override
+//	public int createQuote(Quote quote) {
+//		return employeeDAO.createQuote(quote);
+//	}
+
+//	@Override
+//	public List<Quote> viewQuote() {
+//		return employeeDAO.viewQuote();
+//	}
 
 	@Override
 	public int createInvoice(Invoice invoice) {

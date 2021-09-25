@@ -84,8 +84,8 @@ public class EmployeeController extends HttpServlet {
 			System.out.println(shippingCost);
 			double totalOrderValue = Double.parseDouble(request.getParameter("totalOrderValue"));
 			System.out.println(totalOrderValue);
-
-			System.out.println("Quantity: " + request.getParameter("quantity"));
+			int quantity = Integer.parseInt(request.getParameter("quantity"));
+			System.out.println("Quantity: " + quantity);
 
 			ExternalService external = new ExternalServiceImpl();
 			EmployeeService employeeService = new EmployeeServiceImpl();
@@ -99,8 +99,7 @@ public class EmployeeController extends HttpServlet {
 			}
 
 			// get the name of each products added via check-box
-			// convert the list of the products (product_id) to string type separated by
-			// period (.)
+			// convert the list of the products (product_id) to string type
 			String[] batchProduct = request.getParameterValues("batchProduct");
 			String listOfProduct = "";
 			for (String list : batchProduct) {
@@ -125,21 +124,23 @@ public class EmployeeController extends HttpServlet {
 			double totalInvoiceValue;
 			totalInvoiceValue = external.calculateTotalInvoiceValue(productPrice, shippingCost, totalGSTAmount);
 
-			Quote quote = new Quote(orderDate, customerID, customerName, customerGSTNo, customerShippingAddress,
-					customerCity, customerPhone, customerEmail, customerPincode, shippingCost, totalOrderValue, status);
+//			Quote quote = new Quote(orderDate, customerID, customerName, customerGSTNo, customerShippingAddress,
+//					customerCity, customerPhone, customerEmail, customerPincode, shippingCost, totalOrderValue, status);
 			Order order = new Order(orderDate, orderDatetime, customerID, customerName, customerShippingAddress,
 					listOfProduct, totalOrderValue, shippingCost, shippingAgency, status);
 			Invoice invoice = new Invoice(invoiceDate, orderDatetime, customerID, customerName, listOfProduct, gst,
 					typeOfGST, totalGSTAmount, totalInvoiceValue, status);
 
-			int quoteStatus = employeeService.createQuote(quote);
-			int orderStatus = employeeService.addOrder(order);
+			int quoteStatus = employeeService.createQuote(order);
+			System.out.println("Order table entry done!");
+//			int orderStatus = employeeService.addOrder(order);
 			int invoiceStatus = employeeService.createInvoice(invoice);
-			System.out.println(quoteStatus + " --------- " + orderStatus + " -------- " + invoiceStatus);
+			System.out.println("Invoice table entry done!");
+			System.out.println(quoteStatus + " --------- " + invoiceStatus);
 			RequestDispatcher rd;
 			// forward only when quote, order and invoice data are successfully inserted in
 			// the database
-			if (quoteStatus > 0 && orderStatus > 0 && invoiceStatus > 0) {
+			if (quoteStatus > 0 && invoiceStatus > 0) {
 				rd = request.getRequestDispatcher("/JSP/employeeQuote.jsp");
 				request.setAttribute("quoteMsg", Notify.QUOTE_SUCCESS);
 				rd.forward(request, response);
@@ -149,7 +150,7 @@ public class EmployeeController extends HttpServlet {
 				rd.forward(request, response);
 			}
 		}
-
+//		java.sql.Date.valueOf( todayLocalDate );
 		// handle request from invoice page
 		if (action.equals("invoice")) {
 			String getOrderDate = request.getParameter("orderDate");

@@ -23,8 +23,7 @@ public class DBConnection {
 //			read a properties file with a Resource Bundle
 			resource = ResourceBundle.getBundle("com.toyodo.utils.dbresource");
 //			establishes a database connection
-			con = DriverManager.getConnection(resource.getString("db.url"), resource.getString("db.id"),
-					resource.getString("db.password"));
+			con = DriverManager.getConnection(resource.getString("db.url"), resource.getString("db.id"), "");
 		} catch (ClassNotFoundException | SQLException ex) {
 			System.out.println(ex);
 		}
