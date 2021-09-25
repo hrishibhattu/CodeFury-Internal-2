@@ -1,0 +1,36 @@
+/*
+ * Connect Application with MySQL database
+ * */
+
+package com.toyodo.utils;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.ResourceBundle;
+
+/*
+ * @author JAVATAR
+ * */
+
+public class DBConnection {
+	private static Connection con;
+	private static ResourceBundle resource;
+	public static Connection createConnection() {
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			
+			  resource = ResourceBundle.getBundle("ToYoDo/src/com/toyodo/utils/dbresource");
+			  con = DriverManager.getConnection(resource.getString("db.url"),
+			  resource.getString("db.id"), resource.getString("db.password"));	
+		}
+		catch (ClassNotFoundException | SQLException ex) {
+			System.out.println(ex);
+		}
+	return con;
+	}
+	public static void main(String[] args) {
+		Connection cn = createConnection();
+		System.out.println(cn);
+	}
+}

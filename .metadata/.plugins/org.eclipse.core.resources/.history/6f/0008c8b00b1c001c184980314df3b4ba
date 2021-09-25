@@ -1,0 +1,16 @@
+package com.toyodo.service.impl;
+
+
+import com.toyodo.dao.ExternalDAO;
+import com.toyodo.service.ExternalService;
+
+public class ExternalServiceImpl implements ExternalService {
+
+	private ExternalDAO externalDAO;
+	
+	@Override
+	public boolean isCustomerID(String customerNameID) {
+		return externalDAO.isCustomerID(customerNameID);
+	}
+	
+}

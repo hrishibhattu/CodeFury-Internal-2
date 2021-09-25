@@ -1,0 +1,14 @@
+127.0.0.1 - - [25/Sep/2021:11:27:33 +0530] "GET / HTTP/1.1" 404 751
+0:0:0:0:0:0:0:1 - - [25/Sep/2021:11:27:37 +0530] "GET /ToYoDo/JSP/employeeQuote.jsp HTTP/1.1" 200 1945
+0:0:0:0:0:0:0:1 - - [25/Sep/2021:11:27:44 +0530] "GET /ToYoDo/JSP/employeeLogin.jsp HTTP/1.1" 200 3546
+0:0:0:0:0:0:0:1 - - [25/Sep/2021:11:27:50 +0530] "POST /ToYoDo/LoginController?role=employee HTTP/1.1" 200 11415
+0:0:0:0:0:0:0:1 - - [25/Sep/2021:11:27:56 +0530] "GET /ToYoDo/JSP/employeeOrderList.jsp HTTP/1.1" 200 14971
+0:0:0:0:0:0:0:1 - - [25/Sep/2021:11:27:59 +0530] "GET /ToYoDo/JSP/employeeQuote.jsp HTTP/1.1" 200 17869
+0:0:0:0:0:0:0:1 - - [25/Sep/2021:11:27:59 +0530] "GET /ToYoDo/JS/costValueAutoCalculator.js HTTP/1.1" 304 -
+0:0:0:0:0:0:0:1 - - [25/Sep/2021:11:27:59 +0530] "GET /ToYoDo/CSS/style.css HTTP/1.1" 304 -
+0:0:0:0:0:0:0:1 - - [25/Sep/2021:12:01:09 +0530] "GET /ToYoDo/JSP/employeeQuote.jsp HTTP/1.1" 200 1945
+0:0:0:0:0:0:0:1 - - [25/Sep/2021:12:01:11 +0530] "GET /ToYoDo/JSP/employeeLogin.jsp HTTP/1.1" 200 3546
+0:0:0:0:0:0:0:1 - - [25/Sep/2021:12:01:16 +0530] "POST /ToYoDo/LoginController?role=employee HTTP/1.1" 200 11415
+0:0:0:0:0:0:0:1 - - [25/Sep/2021:12:01:16 +0530] "GET /ToYoDo/CSS/layout.css HTTP/1.1" 304 -
+0:0:0:0:0:0:0:1 - - [25/Sep/2021:12:01:18 +0530] "GET /ToYoDo/JSP/employeeQuote.jsp HTTP/1.1" 200 17869
+0:0:0:0:0:0:0:1 - - [25/Sep/2021:12:01:46 +0530] "POST /ToYoDo/EmployeeController?action=quote HTTP/1.1" 200 18355

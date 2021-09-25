@@ -1,0 +1,8 @@
+package com.toyodo.service;
+
+import com.toyodo.model.Employee;
+
+public interface EmployeeService {
+	String employeeLogin(Employee employeeLogin);
+	String listOrder();
+}

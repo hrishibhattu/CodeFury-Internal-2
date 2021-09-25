@@ -1,0 +1,43 @@
+package com.toyodo.service.impl;
+
+
+import com.toyodo.dao.ExternalDAO;
+import com.toyodo.factory.ExternalDAOFactory;
+import com.toyodo.model.Products;
+import com.toyodo.service.ExternalService;
+
+public class ExternalServiceImpl implements ExternalService {
+
+	private ExternalDAO externalDAO;
+	
+	public ExternalServiceImpl() {
+		externalDAO = ExternalDAOFactory.getExternalDAO();
+	}
+	
+	@Override
+	public boolean isCustomerID(String customerNameID) {
+		return externalDAO.isCustomerID(customerNameID);
+	}
+
+	@Override
+	public Products getProductsDetails(String productID) {
+		return externalDAO.getProductsDetails(productID);
+	}
+
+	@Override
+	public double calculateGSTRate(double price) {
+		return externalDAO.calculateGSTRate(price);
+	}
+
+	@Override
+	public double calculateTotalGSTAmmount(double totalGSTAmount, double gst) {
+		return externalDAO.calculateTotalGSTAmmount(totalGSTAmount, gst);
+	}
+
+	@Override
+	public double calculateTotalInvoiceValue(double productPrice, double shippingCost, double gst) {
+		return externalDAO.calculateTotalInvoiceValue(productPrice, shippingCost, gst);
+	}
+	
+	
+}

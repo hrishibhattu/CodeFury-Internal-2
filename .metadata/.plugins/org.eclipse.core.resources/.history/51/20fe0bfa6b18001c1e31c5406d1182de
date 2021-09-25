@@ -1,0 +1,21 @@
+package com.toyodo.service.impl;
+
+import com.toyodo.dao.CustomerDAO;
+import com.toyodo.factory.CustomerDAOFactory;
+import com.toyodo.model.CustomerLogin;
+import com.toyodo.service.CustomerService;
+
+public class CustomerServiceImpl implements CustomerService{
+
+	private CustomerDAO customerDAO;
+	public CustomerServiceImpl() {
+		customerDAO = CustomerDAOFactory.getCustomerDAO();
+	}
+
+	@Override
+	public CustomerLogin customerLogin(String customerNameID, String customerNameID2, String password) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+}

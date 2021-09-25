@@ -1,0 +1,99 @@
+package com.toyodo.dao.impl;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import com.toyodo.dao.ExternalDAO;
+import com.toyodo.model.Products;
+import com.toyodo.utils.DBConnection;
+
+/*
+ * @author JAVATAR
+ * */
+
+public class ExternalDAOImpl implements ExternalDAO{
+	private static ExternalDAOImpl externalDAOImpl;
+	private Connection con;
+	private PreparedStatement ps;
+	private ResultSet rs;
+	public static ExternalDAOImpl createObject() {
+		if (externalDAOImpl == null) {
+			synchronized (ExternalDAOImpl.class) {
+				externalDAOImpl = new ExternalDAOImpl();
+			}
+		}
+		return externalDAOImpl;
+	}
+
+	@Override
+	public void createConnection() {
+		con = DBConnection.createConnection();
+	}
+	
+	@Override
+	public boolean isCustomerID(String customerNameID) {
+//		regular expression pattern to determine whether the input provided is customer id or customer name
+//		if customerNameID contains any number, the input is clearly Customer ID
+		String regex = "(.)*(\\d)(.)*";
+		Pattern pattern = Pattern.compile(regex);
+		Matcher matcher = pattern.matcher(customerNameID);
+		boolean isMatched = matcher.matches();
+		return isMatched;
+	}
+
+	@Override
+	public Products getProductsDetails(String productID) {
+		createConnection();
+		Products products = null;
+		final String strsql = "SELECT * FROM `products` WHERE `product_id` = ?";
+		try {
+			ps = con.prepareStatement(strsql);
+			ps.setString(1, productID);
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				products = new Products();
+				products.setProductID(rs.getString("product_id"));
+				products.setName(rs.getString("name"));
+				products.setPrice(rs.getDouble("price"));
+				products.setCategory(rs.getString("category"));
+				
+			}
+		} catch (SQLException sqlex) {
+			System.out.println(sqlex);
+		} finally {
+			if (ps != null) {
+				try {
+					ps.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return products;
+	}
+
+	@Override
+	public double calculateGSTRate(double price) {
+		// GST rates for the product
+		// flat rate of 10% for all types of products
+		return (price * 0.1);
+	}
+
+	@Override
+	public double claculateTotalGSTAmmount(double totalGSTAmount, double gst) {
+		// total GST amount is the sum of GST rates for products
+		return (totalGSTAmount + gst);
+	}
+}
+

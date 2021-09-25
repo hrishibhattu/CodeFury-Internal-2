@@ -1,0 +1,24 @@
+package com.toyodo.models;
+
+public class Login {
+	String customer_id;
+	String password;
+	public String getCustomer_id() {
+		return customer_id;
+	}
+	public void setCustomer_id(String customer_id) {
+		this.customer_id = customer_id;
+	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	public Login(String customer_id, String password) {
+		super();
+		this.customer_id = customer_id;
+		this.password = password;
+	}
+	
+}

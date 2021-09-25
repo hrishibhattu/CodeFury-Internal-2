@@ -1,0 +1,20 @@
+package com.toyodo.service.impl;
+
+import com.toyodo.dao.EmployeeDAO;
+import com.toyodo.factory.EmployeeDAOFactory;
+import com.toyodo.model.EmployeeLogin;
+import com.toyodo.service.EmployeeService;
+
+public class EmployeeServiceImpl implements EmployeeService {
+
+	private EmployeeDAO employeeDAO;
+
+	public EmployeeServiceImpl() {
+		employeeDAO = EmployeeDAOFactory.getEmployeeDAO();
+	}
+
+	@Override
+	public String employeeLogin(EmployeeLogin employeeLogin) {
+		return employeeDAO.employeeLogin(employeeLogin);
+	}
+}

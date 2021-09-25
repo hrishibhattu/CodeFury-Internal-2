@@ -1,0 +1,5 @@
+package com.toyodo.services;
+
+public interface CustomerService {
+
+}

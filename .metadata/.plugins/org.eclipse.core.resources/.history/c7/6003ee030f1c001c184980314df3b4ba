@@ -1,0 +1,10 @@
+package com.toyodo.dao;
+
+import com.toyodo.model.Products;
+
+public interface ExternalDAO {
+
+	boolean isCustomerID(String customerNameID);
+	Products getProductsDetails(String productID);
+	double calculateGSTRate();
+}

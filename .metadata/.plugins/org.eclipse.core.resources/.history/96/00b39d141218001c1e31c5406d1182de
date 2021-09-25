@@ -1,0 +1,5 @@
+package com.toyodo.factory;
+
+public class CustomerDAOFactory {
+
+}

@@ -1,0 +1,101 @@
+package com.toyodo.controller;
+
+import java.io.IOException;
+import java.sql.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.toyodo.model.Order;
+import com.toyodo.model.Quote;
+import com.toyodo.service.EmployeeService;
+import com.toyodo.service.impl.EmployeeServiceImpl;
+import com.toyodo.notification.Notify;
+
+/**
+ * Servlet implementation class EmployeeController
+ */
+@WebServlet("/EmployeeController")
+public class EmployeeController extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public EmployeeController() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		response.getWriter().append("Served at: ").append(request.getContextPath());
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String customerID = null;
+		String customerName = null;
+		String status = "Pending";
+		String orderDate = request.getParameter("orderDate");
+	    Date order_date = Date.valueOf(orderDate);	    
+		String customerNameID = request.getParameter("customerNameID");
+		String customerGSTNo = request.getParameter("gstNo");
+		String customerShippingAddress = request.getParameter("shippingAddress");
+		String customerCity = request.getParameter("city");
+		String customerPhone = request.getParameter("phone");
+		String customerEmail = request.getParameter("email");
+		int customerPincode = Integer.parseInt(request.getParameter("pincode"));
+		double shippingCost = Double.parseDouble(request.getParameter("shippingCost"));
+		System.out.println(shippingCost);
+		double totalOrderValue = Double.parseDouble(request.getParameter("totalOrderValue"));
+		System.out.println(totalOrderValue);
+		if (isCustomerID(customerNameID)) {
+			customerName = "";
+			customerID = customerNameID;
+		}
+		else {
+			customerName = customerNameID;
+			customerID = "";
+		}
+		
+		String listOfProduct = "";
+		
+		Quote quote = new Quote(order_date, customerID, customerName, customerGSTNo, customerShippingAddress, customerCity, customerPhone, customerEmail, customerPincode, shippingCost, totalOrderValue, status);
+		Order order = new Order(order_date, customerID, customerName, customerShippingAddress, listOfProduct, totalOrderValue, shippingCost, status);
+		EmployeeService employeeService = new EmployeeServiceImpl();
+		int result = employeeService.createQuote(quote); 
+		RequestDispatcher rd;
+		if (result > 0) {
+			rd = request.getRequestDispatcher("/JSP/employeeQuote.jsp");
+			request.setAttribute("quoteMsg", Notify.QUOTE_SUCCESS);
+			rd.forward(request, response);
+		} else {
+			request.setAttribute("quoteMsg", Notify.QUOTE_ERROR);
+			rd = request.getRequestDispatcher("/JSP/employeeQuote.jsp");
+			rd.forward(request, response);
+		}
+	}
+	
+	private boolean isCustomerID(String customerNameID) {
+//		regular expression pattern to determine whether the input provided is customer id or customer name
+//		if customerNameID contains any number, the input is clearly Customer ID
+        String regex = "(.)*(\\d)(.)*";      
+        Pattern pattern = Pattern.compile(regex);
+		Matcher matcher = pattern.matcher(customerNameID);
+		boolean isMatched = matcher.matches();
+        return isMatched;
+	}
+
+}

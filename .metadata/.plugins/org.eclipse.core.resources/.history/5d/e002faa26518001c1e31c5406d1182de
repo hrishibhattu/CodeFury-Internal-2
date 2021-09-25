@@ -1,0 +1,8 @@
+package com.toyodo.dao;
+
+import com.toyodo.models.EmployeeLogin;
+
+public interface EmployeeDAO {
+	String employeeLogin(EmployeeLogin employeeLogin);
+	void closeConnection();
+}

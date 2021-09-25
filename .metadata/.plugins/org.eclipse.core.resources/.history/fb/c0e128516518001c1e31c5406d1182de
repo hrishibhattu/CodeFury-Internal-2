@@ -1,0 +1,5 @@
+package com.toyodo.dao;
+
+public interface EmployeeDAO {
+
+}

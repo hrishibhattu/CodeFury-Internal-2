@@ -1,0 +1,23 @@
+package com.toyodo.model;
+//	Shipping Agency
+public class Agency {
+	private String agencyName;
+	private String agencyAddress;
+	public String getAgencyName() {
+		return agencyName;
+	}
+	public void setAgencyName(String agencyName) {
+		this.agencyName = agencyName;
+	}
+	public String getAgencyAddress() {
+		return agencyAddress;
+	}
+	public void setAgencyAddress(String agencyAddress) {
+		this.agencyAddress = agencyAddress;
+	}
+	public Agency(String agencyName) {
+		super();
+		this.agencyName = agencyName;
+	}
+	
+}

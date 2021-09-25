@@ -1,0 +1,26 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<%@page import="java.util.*, com.toyodo.utils.*, com.toyodo.notification.*, com.toyodo.models.EmployeeLogin"%>
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Order Management Dashboard</title>
+</head>
+<body>
+<%
+HttpSession httpSession = request.getSession(false);
+String employeeID = (String) httpSession.getAttribute("loginID");
+System.out.println(employeeID);
+if (employeeID == null || httpSession.isNew()){
+	RequestDispatcher rd = request.getRequestDispatcher("/JSP/index.jsp");
+	request.setAttribute("unauthorised_msg", Notify.UNAUTHORISED);
+	rd.forward(request, response);
+}
+
+%>
+
+<h1>Welcome</h1>
+</body>
+</html>

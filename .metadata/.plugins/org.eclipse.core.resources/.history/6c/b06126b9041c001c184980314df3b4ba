@@ -1,0 +1,133 @@
+package com.toyodo.model;
+
+import java.sql.Date;
+
+public class Invoice {
+	private String invoiceID;
+	private Date invoiceDate;
+	private String orderID;
+	private String customerID;
+	private String customerName;
+	private String listOfProductsWithGST;
+	private String typeOfGST;
+	private double totalGSTAmount;
+	private double totalInvoiceValue;
+	private String status;
+
+//	invoice ID is auto incremented hence requires only getter
+	public String getInvoiceID() {
+		return invoiceID;
+	}
+
+	public Date getInvoiceDate() {
+		return invoiceDate;
+	}
+
+	public void setInvoiceDate(Date invoiceDate) {
+		this.invoiceDate = invoiceDate;
+	}
+
+	public String getOrderID() {
+		return orderID;
+	}
+
+	public void setOrderID(String orderID) {
+		this.orderID = orderID;
+	}
+
+	public String getCustomerID() {
+		return customerID;
+	}
+
+	public void setCustomerID(String customerID) {
+		this.customerID = customerID;
+	}
+
+	public String getCustomerName() {
+		return customerName;
+	}
+
+	public void setCustomerName(String customerName) {
+		this.customerName = customerName;
+	}
+
+	public String getListOfProductsWithGST() {
+		return listOfProductsWithGST;
+	}
+
+	public void setListOfProductsWithGST(String listOfProductsWithGST) {
+		this.listOfProductsWithGST = listOfProductsWithGST;
+	}
+
+	public String getTypeOfGST() {
+		return typeOfGST;
+	}
+
+	public void setTypeOfGST(String typeOfGST) {
+		this.typeOfGST = typeOfGST;
+	}
+
+	public double getTotalGSTAmount() {
+		return totalGSTAmount;
+	}
+
+	public void setTotalGSTAmount(double totalGSTAmount) {
+		this.totalGSTAmount = totalGSTAmount;
+	}
+
+	public double getTotalInvoiceValue() {
+		return totalInvoiceValue;
+	}
+
+	public void setTotalInvoiceValue(double totalInvoiceValue) {
+		this.totalInvoiceValue = totalInvoiceValue;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public Invoice(String invoiceID, Date invoiceDate, String orderID, String customerID, String customerName,
+			String listOfProductsWithGST, String typeOfGST, double totalGSTAmount, double totalInvoiceValue,
+			String status) {
+		super();
+		this.invoiceID = invoiceID;
+		this.invoiceDate = invoiceDate;
+		this.orderID = orderID;
+		this.customerID = customerID;
+		this.customerName = customerName;
+		this.listOfProductsWithGST = listOfProductsWithGST;
+		this.typeOfGST = typeOfGST;
+		this.totalGSTAmount = totalGSTAmount;
+		this.totalInvoiceValue = totalInvoiceValue;
+		this.status = status;
+	}
+
+	public Invoice(Date invoiceDate, String orderID, String customerID, String customerName,
+			String listOfProductsWithGST, String typeOfGST, double totalGSTAmount, double totalInvoiceValue,
+			String status) {
+		super();
+		this.invoiceDate = invoiceDate;
+		this.orderID = orderID;
+		this.customerID = customerID;
+		this.customerName = customerName;
+		this.listOfProductsWithGST = listOfProductsWithGST;
+		this.typeOfGST = typeOfGST;
+		this.totalGSTAmount = totalGSTAmount;
+		this.totalInvoiceValue = totalInvoiceValue;
+		this.status = status;
+	}
+
+	@Override
+	public String toString() {
+		return "Invoice [invoiceID=" + invoiceID + ", invoiceDate=" + invoiceDate + ", orderID=" + orderID
+				+ ", customerID=" + customerID + ", customerName=" + customerName + ", listOfProductsWithGST="
+				+ listOfProductsWithGST + ", typeOfGST=" + typeOfGST + ", totalGSTAmount=" + totalGSTAmount
+				+ ", totalInvoiceValue=" + totalInvoiceValue + ", status=" + status + "]";
+	}
+
+}

@@ -1,0 +1,62 @@
+package com.toyodo.dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import com.toyodo.models.EmployeeLogin;
+import com.toyodo.utils.DBConnection;
+
+/*
+ * @author JAVATAR
+ * */
+
+public class EmployeeDAO {
+	private static EmployeeDAO operation;
+	private Connection con;
+	private PreparedStatement ps;
+	private ResultSet rs;
+
+	public static EmployeeDAO createObject() {
+		if (operation == null) {
+			synchronized (EmployeeDAO.class) {
+				operation = new EmployeeDAO();
+			}
+		}
+		return operation;
+	}
+	
+	public String employeeLogin(EmployeeLogin employeeLogin) {
+		String credential = "invalid";
+		con = DBConnection.createConnection();
+		try {
+			String strlogin = "SELECT * FROM employee WHERE employee_id = ? AND password = ?";
+			ps = con.prepareStatement(strlogin);
+			ps.setString(1, employeeLogin.getEmployee_id());
+			ps.setString(2, employeeLogin.getPassword());
+			rs = ps.executeQuery();
+			if (rs.next())
+				credential = "valid";
+		} catch (SQLException sqlex) {
+			System.out.println(sqlex);
+		} finally {
+			if (ps != null) {
+				try {
+					ps.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return credential;
+	}
+	
+}

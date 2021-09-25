@@ -1,0 +1,29 @@
+#header {
+	width: 100%;
+	text-align: center;
+	background-color: lightblue;
+}
+
+#sidebar-left {
+	width: 15%;
+	float: left;
+	overflow: auto;
+	background-color: #ffe3d5;
+}
+
+#main {
+	width: 85%;
+	float: left;
+	background-color: #f2f8ff;
+}
+
+#footer {
+	width: 100%;
+	clear: both;
+	text-align: center;
+	background-color: lightblue;
+}
+
+#sidebar-left, #main {
+	min-height: 800px
+}

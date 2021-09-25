@@ -1,0 +1,6 @@
+package com.toyodo.models;
+
+public class EmployeeLogin {
+	String employee_id;
+	String password;
+}

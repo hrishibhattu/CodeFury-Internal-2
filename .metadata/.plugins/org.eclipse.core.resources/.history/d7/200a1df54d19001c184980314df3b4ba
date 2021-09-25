@@ -1,0 +1,27 @@
+#header {
+	width: 100%;
+	text-align: center;
+	background-color: #fffcec;
+}
+
+#sidebar-left {
+	width: 15%;
+	height: 600px;
+	float: left;
+	overflow: auto;
+	background-color: #f2f2f2;
+}
+
+#main {
+	width: 85%;
+	height: 600px;
+	float: left;
+	background-color: #ffffff;
+}
+
+#footer {
+	width: 100%;
+	clear: both;
+	text-align: center;
+	background-color: #fffcec;
+}

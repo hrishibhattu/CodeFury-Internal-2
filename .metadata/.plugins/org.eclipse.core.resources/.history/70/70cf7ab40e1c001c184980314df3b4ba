@@ -1,0 +1,6 @@
+package com.toyodo.dao;
+
+public interface ExternalDAO {
+
+	boolean isCustomerID(String customerNameID);
+}

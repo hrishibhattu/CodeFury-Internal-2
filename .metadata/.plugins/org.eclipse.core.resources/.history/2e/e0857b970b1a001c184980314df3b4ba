@@ -1,0 +1,51 @@
+package com.toyodo.controller;
+
+import java.io.IOException;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ * Servlet implementation class EmployeeController
+ */
+@WebServlet("/EmployeeController")
+public class EmployeeController extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public EmployeeController() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		response.getWriter().append("Served at: ").append(request.getContextPath());
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String order_id = request.getParameter("order_id");
+		Date order_date = new SimpleDateFormat("yyyy-MM-dd").parse(request.getParameter("order_date");
+		String customer_id = request.getParameter("customer_id");
+		String customer_shipping_address = request.getParameter("customer_shipping_address");
+		String list_of_products = request.getParameter("list_of_products");
+		String total_order_value = request.getParameter("total_order_value");
+		double shipping_cost = Double.parseDouble(request.getParameter("shipping_cost"));
+		String shipping_agency = request.getParameter("order_id");
+		String status = request.getParameter("order_id");
+	}
+
+}

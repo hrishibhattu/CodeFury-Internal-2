@@ -1,0 +1,5 @@
+package com.toyodo.service;
+
+public interface EmployeeService {
+
+}

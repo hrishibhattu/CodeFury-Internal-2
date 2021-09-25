@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="com.toyodo.utils.CustomerLoginAuth"/>
+<fullyQualifiedTypeName name="com.toyodo.notification.Notify"/>
+<fullyQualifiedTypeName name="javax.security.auth.message.callback.PrivateKeyCallback.Request"/>
+<fullyQualifiedTypeName name="javax.servlet.RequestDispatcher"/>
+<fullyQualifiedTypeName name="com.toyodo.utils.EmployeeLoginAuth"/>
+<fullyQualifiedTypeName name="java.sql.DriverManager"/>
+<fullyQualifiedTypeName name="com.toyodo.utils.DBConnection"/>
+<fullyQualifiedTypeName name="com.toyodo.dao.impl.CustomerDAOImpl"/>
+<fullyQualifiedTypeName name="com.toyodo.dao.impl.EmployeeDAOImpl"/>
+<fullyQualifiedTypeName name="com.toyodo.models.EmployeeLogin"/>
+<fullyQualifiedTypeName name="com.toyodo.models.CustomerLogin"/>
+<fullyQualifiedTypeName name="com.toyodo.dao.CustomerDAO"/>
+<fullyQualifiedTypeName name="com.toyodo.factory.CustomerDAOFactory"/>
+<fullyQualifiedTypeName name="com.toyodo.service.impl.CustomerServiceImpl"/>
+<fullyQualifiedTypeName name="com.toyodo.service.CustomerService"/>
+<fullyQualifiedTypeName name="com.toyodo.model.CustomerLogin"/>
+<fullyQualifiedTypeName name="com.toyodo.dao.EmployeeDAO"/>
+<fullyQualifiedTypeName name="com.toyodo.factory.EmployeeDAOFactory"/>
+<fullyQualifiedTypeName name="com.toyodo.service.EmployeeService"/>
+<fullyQualifiedTypeName name="com.toyodo.service.impl.EmployeeServiceImpl"/>
+<fullyQualifiedTypeName name="com.toyodo.model.EmployeeLogin"/>
+<fullyQualifiedTypeName name="javax.servlet.http.HttpSession"/>
+<fullyQualifiedTypeName name="java.sql.Date"/>
+<fullyQualifiedTypeName name="java.util.List"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="java.sql.PreparedStatement"/>
+<fullyQualifiedTypeName name="java.sql.ResultSet"/>
+<fullyQualifiedTypeName name="com.toyodo.model.Order"/>
+<fullyQualifiedTypeName name="com.toyodo.model.Products"/>
+</qualifiedTypeNameHistroy>

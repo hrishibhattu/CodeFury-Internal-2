@@ -1,0 +1,16 @@
+$(document).ready(function() {
+     $(function() {
+         $("#search").blur(function(){  
+        	 var customerNameID = $("customerNameID").val();
+               $.ajax({
+                    url : "searchEntry.jsp",
+                    type : "POST",
+                    data : "customerNameID" + customerNameID,
+                    dataType : "text",
+                    success : function(data) {
+                          $("available").html(data)
+                    });
+             });
+      }
+ }
+}

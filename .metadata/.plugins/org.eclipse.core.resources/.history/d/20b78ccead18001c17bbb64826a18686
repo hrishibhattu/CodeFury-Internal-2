@@ -1,0 +1,55 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<%@page import="java.util.*, java.io.*, com.toyodo.utils.*, com.toyodo.notification.*,com.toyodo.model.Employee"%>
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Dashboard</title>
+
+<link href="/ToYoDo/CSS/layout.css" rel="stylesheet" type="text/css" media="all" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+	
+<%
+HttpSession httpSession = request.getSession(false);
+String employeeID = (String) httpSession.getAttribute("loginID");
+System.out.println(employeeID);
+if (employeeID == null || httpSession.isNew()){
+	RequestDispatcher rd = request.getRequestDispatcher("/JSP/index.jsp");
+	request.setAttribute("unauthorised_msg", Notify.UNAUTHORISED);
+	rd.forward(request, response);
+}
+%>
+
+	<%@include file="/WEB-INF/nav/dashboardNav.html" %>
+	
+
+
+	<div id="header">
+<strong>Welcome <%=employeeID %></strong>
+	</div>
+	<div id="sidebar-left">
+		<button type="button" class="btn btn-outline-dark btn-block">List of Orders</button>
+		<button type="button" class="btn btn-outline-info btn-block">Create New Quote</button>
+		<input type="file" class="custom-file-input btn btn-outline-dark btn-block" id="inputGroupFile01">
+		<div class="input-group mb-3">
+  <div class="input-group-prepend">
+    <span class="input-group-text">Upload</span>
+  </div>
+  <div class="custom-file">
+    <input type="file" class="custom-file-input" id="inputGroupFile01">
+    <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+  </div>
+</div>
+	</div>
+	<div id="main">Main</div>
+	<div id="footer">Footer</div>
+</body>
+</html>

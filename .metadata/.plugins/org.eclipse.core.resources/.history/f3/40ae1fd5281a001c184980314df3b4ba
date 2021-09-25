@@ -1,0 +1,92 @@
+package com.toyodo.controller;
+
+import java.io.IOException;
+import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.toyodo.model.Order;
+import com.toyodo.service.EmployeeService;
+import com.toyodo.service.impl.EmployeeServiceImpl;
+import com.toyodo.notification.Notify;
+
+/**
+ * Servlet implementation class EmployeeController
+ */
+@WebServlet("/EmployeeController")
+public class EmployeeController extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public EmployeeController() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		response.getWriter().append("Served at: ").append(request.getContextPath());
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String order_id = request.getParameter("order_id");
+	    String startDateString = request.getParameter("order_date");
+	    Date order_date = null;
+		try {
+			order_date = (Date) new SimpleDateFormat("dd/MM/yyyy").parse(LocalDate.parse(startDateString, formatter).format(formatter2));
+			System.out.println("Order_Date " + order_date);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	    
+	    String sDate1="31/12/1998";  
+	    try {
+			Date date1=(Date) new SimpleDateFormat("dd/MM/yyyy").parse(sDate1);
+			System.out.println("date1 " + date1);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+	    
+		String customer_id = request.getParameter("customer_id");
+		String customer_shipping_address = request.getParameter("customer_shipping_address");
+		String list_of_products = request.getParameter("list_of_products");
+		double total_order_value = Double.parseDouble(request.getParameter("total_order_value"));
+		double shipping_cost = Double.parseDouble(request.getParameter("shipping_cost"));
+		String shipping_agency = request.getParameter("order_id");
+		String status = request.getParameter("order_id");
+		
+		Order order = new Order(order_id, order_date, customer_id, customer_shipping_address, list_of_products, total_order_value, shipping_cost, shipping_agency, status);
+		EmployeeService employeeService = new EmployeeServiceImpl();
+		int result = employeeService.createQuote(order); 
+		RequestDispatcher rd;
+		if (result > 0) {
+			rd = request.getRequestDispatcher("/JSP/employeeQuote.jsp");
+			request.setAttribute("quoteMsg", Notify.QUOTE_SUCCESS);
+			rd.forward(request, response);
+		} else {
+			request.setAttribute("quoteMsg", Notify.QUOTE_ERROR);
+			rd = request.getRequestDispatcher("/JSP/employeeQuote.jsp");
+			rd.forward(request, response);
+		}
+	}
+
+}

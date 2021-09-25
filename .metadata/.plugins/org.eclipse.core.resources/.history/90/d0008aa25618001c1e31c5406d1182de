@@ -1,0 +1,7 @@
+package com.toyodo.factory;
+
+public class EmployeeDAOFactory {
+	public static EmployeeDAOFactory getEmployeeDAO() {
+		return new EmployeeDAOFactory();
+	} 
+}

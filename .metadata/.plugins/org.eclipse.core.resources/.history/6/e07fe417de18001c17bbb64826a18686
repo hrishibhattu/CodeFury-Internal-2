@@ -1,0 +1,13 @@
+package com.toyodo.dao;
+
+import java.util.List;
+
+import com.toyodo.model.Employee;
+import com.toyodo.model.Order;
+
+public interface EmployeeDAO {
+//	void createConnection();
+	String employeeLogin(Employee employeeLogin);
+	List<Order> listOrder();
+	void closeConnection();
+}

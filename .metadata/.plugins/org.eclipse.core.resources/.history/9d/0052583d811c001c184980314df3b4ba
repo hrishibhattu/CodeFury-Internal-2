@@ -1,0 +1,24 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Invoice</title>
+</head>
+<body>
+	<%
+		HttpSession httpSession = request.getSession(false);
+		String employeeID = (String) httpSession.getAttribute("loginID");
+		System.out.println(employeeID);
+		if (employeeID == null || httpSession.isNew()) {
+			RequestDispatcher rd = request.getRequestDispatcher("/JSP/index.jsp");
+			request.setAttribute("unauthorised_msg", Notify.UNAUTHORISED);
+			rd.forward(request, response);
+		}
+	%>
+	
+	
+	
+</body>
+</html>

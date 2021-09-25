@@ -1,0 +1,7 @@
+INDEX VERSION 1.4+F:\Java\ToYoDo App\ToYoDo\.metadata\.plugins\org.eclipse.wst.jsdt.core\indexes
+4205490292.index
+1240648765.index
+2369624502.index
+3030828715.index
+3030828715.index
+2293562260.index

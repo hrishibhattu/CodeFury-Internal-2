@@ -1,0 +1,103 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1"%>
+<%@page import="com.toyodo.service.impl.ExternalServiceImpl"%>
+<%@page import="com.toyodo.service.ExternalService"%>
+<%@page
+	import="java.util.*, java.io.*, java.sql.Date, java.sql.Timestamp, com.toyodo.utils.*, com.toyodo.notification.*, com.toyodo.model.Invoice"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Invoice</title>
+<link rel="stylesheet"
+	href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+	<%
+		HttpSession httpSession = request.getSession(false);
+		String employeeID = (String) httpSession.getAttribute("loginID");
+		System.out.println(employeeID);
+		if (employeeID == null || httpSession.isNew()) {
+			RequestDispatcher rd = request.getRequestDispatcher("/JSP/index.jsp");
+			request.setAttribute("unauthorised_msg", Notify.UNAUTHORISED);
+			rd.forward(request, response);
+		}
+	%>
+	<%
+		String getOrderDate = (String) request.getAttribute("orderDate");
+		Date orderDate = Date.valueOf(getOrderDate);
+		Timestamp orderDatetime = (Timestamp) request.getAttribute("orderDatetime");
+	%>
+
+	<%
+		ExternalService external = new ExternalServiceImpl();
+		Invoice invoice = external.viewInvoice(orderDatetime, orderDate);
+		if (invoice == null) {
+			System.out.println("Not Available check after 24hrs");
+		} else {
+	%>
+
+	<div class="container">
+		<div class="card text-center">
+			<div class="card-header">INVOICE</div>
+			<div class="card-body">
+				<h5 class="card-title">Special title treatment</h5>
+				<p class="card-text">
+					<strong> Invoice ID : </strong>
+					<%=invoice.getInvoiceID()%>
+				</p>
+
+				Invoice Date :
+				<%=invoice.getInvoiceDate()%>
+				<hr />
+				Order DateTime :
+				<%=invoice.getOrderDatetime()%>
+				<hr />
+
+				Customer Name/ID :
+				<%=invoice.getCustomerName()%>
+				<%=invoice.getCustomerID()%>
+				<hr />
+				Product ID:
+				<%=invoice.getListOfProducts()%>
+				<hr />
+				Type of GST
+				<%=invoice.getTypeOfGST()%>
+				<hr />
+				GST:
+				<%=invoice.getGst()%>
+				<hr />
+				Total GST amount
+				<%=invoice.getTotalGSTAmount()%>
+				<hr />
+				Total Invoice Value
+				<%=invoice.getTotalInvoiceValue()%>
+
+				<a href="/ToYoDo/JSP/employeeOrderList.jsp" class="btn btn-primary">Previous</a>
+			</div>
+			<div class="card-footer text-muted">
+				<p>Purchase Made On</p>
+				<em> ToYoDo - To Your Door </em>
+				<p>If you have any questions, feel free to call at toll-free
+					number XXXXXXXXXX</p>
+			</div>
+		</div>
+	</div>
+
+
+
+
+	<%
+		}
+	%>
+</body>
+</html>

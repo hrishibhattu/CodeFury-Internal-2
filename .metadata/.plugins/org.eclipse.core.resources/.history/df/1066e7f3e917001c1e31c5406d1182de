@@ -1,0 +1,56 @@
+package com.toyodo.utils;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import com.toyodo.models.CustomerLogin;
+
+/*
+ * @author JAVATAR
+ * */
+
+public class CustomerLoginAuth {
+	private static CustomerLoginAuth operation;
+	private Connection con;
+	private PreparedStatement ps;
+	private ResultSet rs;
+
+	public static CustomerLoginAuth createObject() {
+		if (operation == null) {
+			synchronized (CustomerLoginAuth.class) {
+				operation = new CustomerLoginAuth();
+			}
+		}
+		return operation;
+	}
+
+	public void customerLogin(CustomerLogin customerLogin) {
+		con = DBConnection.createConnection();
+		try {
+			String strsignin = "SELECT * FROM customer_login_credential WHERE customer_id = ? AND password = ?";
+			ps = con.prepareStatement(strsignin);
+			ps.setString(1, customerLogin.getCustomer_id());
+			ps.setString(2, customerLogin.getPassword());
+			rs = ps.executeQuery();
+		} catch (SQLException sqlex) {
+			System.out.println(sqlex);
+		} finally {
+			if (ps != null) {
+				try {
+					ps.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+}

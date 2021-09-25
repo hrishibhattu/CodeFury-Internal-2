@@ -1,0 +1,44 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<%@page import="com.toyodo.service.impl.EmployeeServiceImpl"%>
+<%@page import="com.toyodo.service.EmployeeService"%>
+<%@page
+	import="java.util.*, java.io.*, com.toyodo.utils.*, com.toyodo.notification.*, com.toyodo.model.Invoice"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Invoice</title>
+<link rel="stylesheet"
+	href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+	<%
+		HttpSession httpSession = request.getSession(false);
+		String employeeID = (String) httpSession.getAttribute("loginID");
+		System.out.println(employeeID);
+		if (employeeID == null || httpSession.isNew()) {
+			RequestDispatcher rd = request.getRequestDispatcher("/JSP/index.jsp");
+			request.setAttribute("unauthorised_msg", Notify.UNAUTHORISED);
+			rd.forward(request, response);
+		}
+	%>
+	
+	
+		<%
+			EmployeeService employeeService = new EmployeeServiceImpl();
+		%>
+	
+		
+	
+</body>
+</html>

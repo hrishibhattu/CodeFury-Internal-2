@@ -1,0 +1,92 @@
+package com.toyodo.model;
+
+import java.sql.Date;
+
+public class Invoice {
+	private Date invoice_date;
+	private String order_details;
+	private String customer_details;
+	private String list_of_products_with_gst;
+	private String type_of_gst;
+	private double total_gst_amount;
+	private double total_invoice_value;
+	private String status;
+
+	public Date getInvoice_date() {
+		return invoice_date;
+	}
+
+	public void setInvoice_date(Date invoice_date) {
+		this.invoice_date = invoice_date;
+	}
+
+	public String getOrder_details() {
+		return order_details;
+	}
+
+	public void setOrder_details(String order_details) {
+		this.order_details = order_details;
+	}
+
+	public String getCustomer_details() {
+		return customer_details;
+	}
+
+	public void setCustomer_details(String customer_details) {
+		this.customer_details = customer_details;
+	}
+
+	public String getList_of_products_with_gst() {
+		return list_of_products_with_gst;
+	}
+
+	public void setList_of_products_with_gst(String list_of_products_with_gst) {
+		this.list_of_products_with_gst = list_of_products_with_gst;
+	}
+
+	public String getType_of_gst() {
+		return type_of_gst;
+	}
+
+	public void setType_of_gst(String type_of_gst) {
+		this.type_of_gst = type_of_gst;
+	}
+
+	public double getTotal_gst_amount() {
+		return total_gst_amount;
+	}
+
+	public void setTotal_gst_amount(double total_gst_amount) {
+		this.total_gst_amount = total_gst_amount;
+	}
+
+	public double getTotal_invoice_value() {
+		return total_invoice_value;
+	}
+
+	public void setTotal_invoice_value(double total_invoice_value) {
+		this.total_invoice_value = total_invoice_value;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public Invoice(Date invoice_date, String order_details, String customer_details, String list_of_products_with_gst,
+			String type_of_gst, double total_gst_amount, double total_invoice_value, String status) {
+		super();
+		this.invoice_date = invoice_date;
+		this.order_details = order_details;
+		this.customer_details = customer_details;
+		this.list_of_products_with_gst = list_of_products_with_gst;
+		this.type_of_gst = type_of_gst;
+		this.total_gst_amount = total_gst_amount;
+		this.total_invoice_value = total_invoice_value;
+		this.status = status;
+	}
+
+}

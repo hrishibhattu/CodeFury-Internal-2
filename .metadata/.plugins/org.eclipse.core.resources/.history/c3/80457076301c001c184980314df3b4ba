@@ -1,0 +1,10 @@
+package com.toyodo.service;
+
+import com.toyodo.model.Products;
+
+public interface ExternalService {
+	boolean isCustomerID(String customerNameID);
+	Products getProductsDetails(String productID);
+	double calculateGSTRate(double price);
+	double claculateTotalGSTAmmount(double totalGSTAmount, gst);
+}

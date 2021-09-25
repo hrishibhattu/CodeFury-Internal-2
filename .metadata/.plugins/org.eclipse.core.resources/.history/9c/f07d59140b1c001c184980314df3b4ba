@@ -1,0 +1,5 @@
+package com.toyodo.dao.impl;
+
+public class ExternalDAOImpl {
+
+}

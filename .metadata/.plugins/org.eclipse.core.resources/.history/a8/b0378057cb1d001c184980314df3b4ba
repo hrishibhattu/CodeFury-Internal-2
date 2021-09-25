@@ -1,0 +1,76 @@
+package com.toyodo.dao.impl;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import com.toyodo.dao.CustomerDAO;
+import com.toyodo.model.Customer;
+import com.toyodo.utils.DBConnection;
+
+/*
+ * @author JAVATAR
+ * */
+
+public class CustomerDAOImpl implements CustomerDAO{
+	private static CustomerDAOImpl customerDAOImpl;
+	private Connection con;
+	private PreparedStatement ps;
+	private ResultSet rs;
+
+	public static CustomerDAOImpl createObject() {
+		if (customerDAOImpl == null) {
+			synchronized (CustomerDAOImpl.class) {
+				customerDAOImpl = new CustomerDAOImpl();
+			}
+		}
+		return customerDAOImpl;
+	}
+
+	@Override
+	public void createConnection() {
+		con = DBConnection.createConnection();
+	}
+	
+	
+	@Override
+	public String customerLogin(Customer customerLogin) {
+		createConnection();
+		String credential = "invalid";
+		try {
+			String strlogin = "SELECT * FROM `customer_login_credential` WHERE (`customer_id` = ? OR `name` = ?) AND `password` = ?";
+			ps = con.prepareStatement(strlogin);
+			ps.setString(1, customerLogin.getCustomer_id());
+			ps.setString(2, customerLogin.getName());
+			ps.setString(3, customerLogin.getPassword());
+			rs = ps.executeQuery();
+			if (rs.next())
+				credential = "valid";
+		} catch (SQLException sqlex) {
+			System.out.println(sqlex);
+		} finally {
+			closeConnection();
+		}
+		return credential;
+		
+	}
+
+	@Override
+	public void closeConnection() {
+		if (ps != null) {
+			try {
+				ps.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		if (rs != null) {
+			try {
+				rs.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+}

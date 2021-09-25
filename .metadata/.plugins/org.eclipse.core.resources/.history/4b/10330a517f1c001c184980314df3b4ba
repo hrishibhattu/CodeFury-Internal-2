@@ -1,0 +1,144 @@
+package com.toyodo.controller;
+
+import java.io.IOException;
+import java.sql.Date;
+import java.time.LocalTime;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.toyodo.model.Invoice;
+import com.toyodo.model.Order;
+import com.toyodo.model.Quote;
+import com.toyodo.service.EmployeeService;
+import com.toyodo.service.ExternalService;
+import com.toyodo.service.impl.EmployeeServiceImpl;
+import com.toyodo.service.impl.ExternalServiceImpl;
+import com.toyodo.notification.Notify;
+
+/**
+ * Servlet implementation class EmployeeController
+ */
+@WebServlet("/EmployeeController")
+public class EmployeeController extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
+	/**
+	 * @see HttpServlet#HttpServlet()
+	 */
+	public EmployeeController() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		response.getWriter().append("Served at: ").append(request.getContextPath());
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		String customerID = "";
+		String customerName = "";
+		String status = "Pending";
+		double gst = 0;
+		double totalGSTAmount = 0;
+		double productPrice = 0;
+		String orderDate = request.getParameter("orderDate");
+		String typeOfGST = "inter-state";
+		//	get the instance of Date class
+		//	order placed at
+		java.util.Date utilDate = new java.util.Date();
+		java.sql.Timestamp orderDatetime = new java.sql.Timestamp(utilDate.getTime());
+        System.out.println("Timestamp time: " + orderDatetime);
+        
+		Date order_date = Date.valueOf(orderDate);
+		String customerNameID = request.getParameter("customerNameID");
+		String customerGSTNo = request.getParameter("gstNo");
+		String customerShippingAddress = request.getParameter("shippingAddress");
+		String customerCity = request.getParameter("city");
+		String customerPhone = request.getParameter("phone");
+		String customerEmail = request.getParameter("email");
+		int customerPincode = Integer.parseInt(request.getParameter("pincode"));
+		String shippingAgency = request.getParameter("shipping_agency");
+		double shippingCost = Double.parseDouble(request.getParameter("shippingCost"));
+		System.out.println(shippingCost);
+		double totalOrderValue = Double.parseDouble(request.getParameter("totalOrderValue"));
+		System.out.println(totalOrderValue);
+		
+		ExternalService external = new ExternalServiceImpl();
+		EmployeeService employeeService = new EmployeeServiceImpl();
+		
+		if (external.isCustomerID(customerNameID)) {
+			customerName = "";
+			customerID = customerNameID;
+		} else {
+			customerName = customerNameID;
+			customerID = "";
+		}
+		
+		//	get the name of each products added via check-box
+		//	convert the list of the products (product_id) to string type separated by period (.)
+		String[] batchProduct = request.getParameterValues("batchProduct");
+		String listOfProduct = "";
+		for (String list : batchProduct) {
+			listOfProduct += list + " . ";
+			productPrice = external.getProductsDetails(list).getPrice();
+			gst = external.calculateGSTRate(productPrice);
+			totalGSTAmount = external.calculateTotalGSTAmmount(totalGSTAmount, gst);
+			System.out.println("Product and GST " + productPrice + " " + gst + " | ");
+			System.out.println("Total GST: " + totalGSTAmount);
+		}
+		
+		System.out.println("List " + listOfProduct);
+		
+		System.out.println(customerID + " name: " + customerName);
+		
+		//	Invoice
+		Date invoiceDate = new Date(utilDate.getTime() + (1000 * 60 * 60 * 24));
+		System.out.println("invoiceDate Tomorrow's Date: " + invoiceDate);
+		
+		
+		double totalInvoiceValue;
+		totalInvoiceValue = external.calculateTotalInvoiceValue(productPrice, shippingCost, totalGSTAmount);
+		
+		Quote quote = new Quote(order_date, customerID, customerName, customerGSTNo, customerShippingAddress,
+				customerCity, customerPhone, customerEmail, customerPincode, shippingCost, totalOrderValue, status);
+		Order order = new Order(order_date, customerID, customerName, customerShippingAddress, listOfProduct,
+				totalOrderValue, shippingCost, shippingAgency, status);
+		Invoice invoice = new Invoice(invoiceDate, orderDatetime, customerID, customerName, listOfProduct, gst, typeOfGST, totalGSTAmount, totalInvoiceValue, status);
+		
+		int quoteStatus = employeeService.createQuote(quote);
+		int orderStatus = employeeService.addOrder(order);
+		employeeService.createInvoice(invoice);
+		
+		
+		RequestDispatcher rd;
+		//	forward only when quote and order are successfully inserted in the database 
+		if (quoteStatus > 0 && orderStatus > 0) {
+			rd = request.getRequestDispatcher("/JSP/employeeQuote.jsp");
+			request.setAttribute("quoteMsg", Notify.QUOTE_SUCCESS);
+			rd.forward(request, response);
+		} else {
+			request.setAttribute("quoteMsg", Notify.QUOTE_FAILED);
+			rd = request.getRequestDispatcher("/JSP/employeeQuote.jsp");
+			rd.forward(request, response);
+		}
+	}
+
+}

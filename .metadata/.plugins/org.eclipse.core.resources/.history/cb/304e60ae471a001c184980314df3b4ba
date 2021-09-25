@@ -1,0 +1,82 @@
+package com.toyodo.controller;
+
+import java.io.IOException;
+import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.toyodo.model.Order;
+import com.toyodo.model.Quote;
+import com.toyodo.service.EmployeeService;
+import com.toyodo.service.impl.EmployeeServiceImpl;
+import com.toyodo.notification.Notify;
+
+/**
+ * Servlet implementation class EmployeeController
+ */
+@WebServlet("/EmployeeController")
+public class EmployeeController extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public EmployeeController() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		response.getWriter().append("Served at: ").append(request.getContextPath());
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String orderDate = request.getParameter("orderDate");
+	    System.out.println("StartDate" + orderDate);
+	    Date order_date = Date.valueOf(orderDate);
+	    System.out.println(order_date);
+	    
+		String customerNameID = request.getParameter("customerNameID");
+		String customerGSTNo = request.getParameter("gstNo");
+		String customerShippingAddress = request.getParameter("shippingAddress");
+		String customerCity = request.getParameter("city");
+		String customerPhone = request.getParameter("phone");
+		String customerEmail = request.getParameter("email");
+		int customerPincode = Integer.parseInt(request.getParameter("pincode"));
+		double shippingCost = Double.parseDouble(request.getParameter("shippingCost"));
+		double totalOrderValue = Double.parseDouble(request.getParameter("totalOrderValue"));
+		Quote quote = new Quote(order_date, customerNameID, customerNameID, customerGSTNo, customerShippingAddress, customerCity, customerPhone, customerEmail, customerPincode, shippingCost, totalOrderValue);
+		EmployeeService employeeService = new EmployeeServiceImpl();
+		int result = employeeService.createQuote(quote); 
+		RequestDispatcher rd;
+		if (result > 0) {
+			rd = request.getRequestDispatcher("/JSP/employeeQuote.jsp");
+			request.setAttribute("quoteMsg", Notify.QUOTE_SUCCESS);
+			rd.forward(request, response);
+		} else {
+			request.setAttribute("quoteMsg", Notify.QUOTE_ERROR);
+			rd = request.getRequestDispatcher("/JSP/employeeQuote.jsp");
+			rd.forward(request, response);
+		}
+	}
+	
+//	private boolean isCustomerID(String customerNameID) {
+//		
+//		return true;
+//	}
+
+}

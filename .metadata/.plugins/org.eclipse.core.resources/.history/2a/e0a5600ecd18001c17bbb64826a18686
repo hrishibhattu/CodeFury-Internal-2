@@ -1,0 +1,12 @@
+<div class="d-flex flex-column">
+  <div class="p-2"><a class="nav-link" href="">
+  	<i class="fas fa-list"></i><strong class="nav-link d-none d-lg-inline"> List of Orders</strong></a>
+  </div>
+  <div class="p-2"><a class="nav-link" href="">
+  	<i class="fas fa-user-edit"></i><strong class="nav-link d-none d-lg-inline"> Create New Quote</strong></a>
+  </div>
+  <div class="p-2"><a class="nav-link" href="">
+  	<i class="fas fa-comment-alt"></i><strong class="nav-link d-none d-lg-inline"> Import Products</strong></a>
+  </div>
+</div>
+

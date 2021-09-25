@@ -1,0 +1,20 @@
+1631904072173	Copy package
+1631904080467	Delete element
+1631904245256	Rename type 'Login'
+1631904270342	Rename type 'LoginAuth'
+1631913235351	Delete element
+1631913368389	Rename type 'CustomerLogInServlet'
+1631913382881	Rename type 'EmployeeLogInServlet'
+1631921337204	Move compilation units
+1631921398896	Rename type 'CustomerLoginAuth'
+1631921415035	Rename type 'EmployeeLoginAuth'
+1631921604291	Rename package 'com.toyodo.dao'
+1631921916504	Rename type 'CustomerDAO'
+1631921927338	Rename type 'EmployeeDAO'
+1631957739623	Rename package 'com.toyodo.servlets'
+1631957757916	Rename type 'CustomerLoginServlet'
+1631957771541	Rename type 'EmployeeLoginServlet'
+1631958860263	Rename package 'com.toyodo.services'
+1631958872754	Rename package 'com.toyodo.models'
+1631987895487	Rename type 'CustomerLogin'
+1631987908429	Rename type 'EmployeeLogin'

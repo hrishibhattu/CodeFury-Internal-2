@@ -1,0 +1,31 @@
+#header {
+	background-color: lightblue;
+	width: 100%;
+	height: auto;
+	text-align: center;
+}
+
+#sidebar-left {
+	float: left;
+	width: 15%;
+	overflow:scroll;
+	background-color: #ffe3d5;
+}
+
+#main {
+	float: left;
+	width: 85%;
+	background-color: #f2f8ff;
+}
+
+#footer {
+	clear: both;
+	width: 100%;
+	height: auto;
+	text-align: center;
+	background-color: lightblue;
+}
+
+#sidebar-left, #main {
+	min-height: 800px
+}

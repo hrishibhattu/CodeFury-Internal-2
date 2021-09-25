@@ -1,0 +1,9 @@
+package com.toyodo.dao;
+
+import com.toyodo.models.CustomerLogin;
+
+public interface CustomerDAO {
+	void createConnection();
+	void customerLogin(CustomerLogin customerLogin);
+	void closeConnection();
+}
