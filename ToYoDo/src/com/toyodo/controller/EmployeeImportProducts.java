@@ -70,6 +70,7 @@ public class EmployeeImportProducts extends HttpServlet {
 		try {
 			JSONParser parser = new JSONParser();
 			JSONArray products;
+//			path
 			products = (JSONArray) parser
 					.parse(new FileReader("/Users/hrishikesh/Developer/hsbc-training/" + fileName));
 

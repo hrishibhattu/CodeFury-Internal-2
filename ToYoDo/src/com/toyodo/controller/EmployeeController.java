@@ -84,6 +84,9 @@ public class EmployeeController extends HttpServlet {
 			System.out.println(shippingCost);
 			double totalOrderValue = Double.parseDouble(request.getParameter("totalOrderValue"));
 			System.out.println(totalOrderValue);
+			
+			
+			
 			int quantity = Integer.parseInt(request.getParameter("quantity"));
 			System.out.println("Quantity: " + quantity);
 
