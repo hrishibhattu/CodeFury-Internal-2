@@ -4,7 +4,7 @@
 -- https://tableplus.com/
 --
 -- Database: toyodo
--- Generation Time: 2021-09-25 23:58:50.9980
+-- Generation Time: 2021-09-26 14:38:07.7700
 -- -------------------------------------------------------------
 
 
@@ -85,6 +85,13 @@ CREATE TABLE `last_login_datetime` (
   PRIMARY KEY (`login_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
+DROP TABLE IF EXISTS `last_login_details`;
+CREATE TABLE `last_login_details` (
+  `login_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `logintime` datetime NOT NULL,
+  PRIMARY KEY (`login_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
 DROP TABLE IF EXISTS `order`;
 CREATE TABLE `order` (
   `order_id` int NOT NULL AUTO_INCREMENT,
@@ -164,6 +171,9 @@ INSERT INTO `invoice` (`invoice_id`, `invoice_date`, `order_datetime`, `customer
 (11022025, '2021-09-26', '2021-09-25 23:30:35', 'C00101', 24.69, 'inter-state', 564.69, 3033.69, 'Pending'),
 (11022026, '2021-09-26', '2021-09-25 23:41:31', 'C00101', 24.69, 'inter-state', 564.69, 3033.69, 'Pending');
 
+INSERT INTO `last_login_details` (`login_id`, `logintime`) VALUES
+('E00201', '2021-09-26 13:31:44');
+
 INSERT INTO `order` (`order_id`, `order_date`, `order_datetime`, `customer_id`, `total_order_value`, `shipping_cost`, `shipping_agency`, `status`) VALUES
 (35800001, '2021-09-22', '2021-09-22 00:00:11', 'C00101', 52000, 150, 'fsgt', 'Pending'),
 (35800002, '2021-09-22', '2021-09-23 03:18:00', 'C00102', 542000, 150, 'wryhert', 'Approved'),
@@ -175,11 +185,21 @@ INSERT INTO `order` (`order_id`, `order_date`, `order_datetime`, `customer_id`, 
 (35800008, '2021-09-24', '2021-09-25 12:01:46', 'C00101', 2763.4, 36.4, 'asdf', 'Pending'),
 (35800009, '2021-09-24', '2021-09-25 12:01:46', 'C00102', 2763.4, 36.4, 'asdf', 'Pending'),
 (35800010, '2021-09-23', '2021-09-25 22:36:31', 'C00101', 934802, 0, 'Blue Dart', 'Pending'),
-(35800011, '2021-09-06', '2021-09-25 23:27:17', 'C00101', 233283, 0, 'fewgtaw', 'Pending'),
-(35800012, '2021-09-06', '2021-09-25 23:28:16', 'C00101', 233283, 0, 'fewgtaw', 'Pending'),
-(35800013, '2021-09-23', '2021-09-25 23:29:23', 'C00101', 110469, 0, 'wgrt', 'Pending'),
-(35800014, '2021-09-23', '2021-09-25 23:30:35', 'C00101', 110469, 0, 'wgrt', 'Pending'),
-(35800015, '2021-09-22', '2021-09-25 23:41:31', 'C00101', 176814, 0, 'gerth', 'Pending');
+(35800011, '2021-09-06', '2021-09-25 23:27:17', 'C00101', 233283, 0, 'fewgtaw', 'Pending');
+
+INSERT INTO `order_product_util` (`order_id`, `product_id`, `quantity`) VALUES
+(35800001, 'P00110', 2),
+(35800002, 'P00110', 3),
+(35800003, 'P00110', 4),
+(35800004, 'P00110', 5),
+(35800005, 'P00110', 6),
+(35800006, 'P00110', 4),
+(35800007, 'P00110', 44),
+(35800008, 'P00110', 3),
+(35800009, 'P00110', 5),
+(35800010, 'P00110', 6),
+(35800011, 'P00110', 6),
+(35800001, 'P00105', 4);
 
 INSERT INTO `products` (`product_id`, `name`, `price`, `category`) VALUES
 ('P00101', 'Sony MHC V82D', 54000, 'Level 3'),
@@ -189,7 +209,7 @@ INSERT INTO `products` (`product_id`, `name`, `price`, `category`) VALUES
 ('P00105', 'Allen Solly Navy Suit', 6900, 'Level 2'),
 ('P00106', 'Denim Coat', 1820, 'Level 2'),
 ('P00108', 'Bottle', 400, 'Level 2'),
-('P00110', 'Wallet', 800, 'Level 2'),
+('P00110', 'Mouse', 800, 'Level 2'),
 ('P00111', 'HDMI Monitor', 12000, 'Level 3'),
 ('P00112', 'Speaker system', 12000, 'Level 3'),
 ('P00113', '20L water', 400, 'Level 1'),
