@@ -9,6 +9,7 @@ import java.sql.Timestamp;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import com.toyodo.dao.EmployeeDAO;
 import com.toyodo.model.Employee;
@@ -163,14 +164,14 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 			while (rs2.next()) {
 				order_id = rs2.getInt("order_id");
 			}
-			String listOfProducts = order.getListOfProducts();
-			String[] products = listOfProducts.split(" ");
+			Map<String, Integer> mapOfProducts = order.getMapOfProducts();
 			PreparedStatement ps1;
-			for (String product : products) {
-				String insertProduct = "INSERT INTO `order_product_util` (order_id, product_id) VALUES (?, ?)";
+			for (String product : mapOfProducts.keySet()) {
+				final String insertProduct = "INSERT INTO `order_product_util` (order_id, product_id, quantity) VALUES (?, ?, ?)";
 				ps1 = con.prepareStatement(insertProduct);
 				ps1.setInt(1, order_id);
 				ps1.setString(2, product);
+				ps1.setInt(3, mapOfProducts.get(product));
 				ps1.executeUpdate();
 			}
 

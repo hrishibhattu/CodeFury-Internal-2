@@ -34,14 +34,14 @@
 <body>
 
 	<%
-		HttpSession httpSession = request.getSession(false);
-		String employeeID = (String) httpSession.getAttribute("loginID");
-		System.out.println(employeeID);
-		if (employeeID == null || httpSession.isNew()) {
-			RequestDispatcher rd = request.getRequestDispatcher("/JSP/index.jsp");
-			request.setAttribute("unauthorised_msg", Notify.UNAUTHORISED);
-			rd.forward(request, response);
-		}
+	HttpSession httpSession = request.getSession(false);
+	String employeeID = (String) httpSession.getAttribute("loginID");
+	System.out.println(employeeID);
+	if (employeeID == null || httpSession.isNew()) {
+		RequestDispatcher rd = request.getRequestDispatcher("/JSP/index.jsp");
+		request.setAttribute("unauthorised_msg", Notify.UNAUTHORISED);
+		rd.forward(request, response);
+	}
 	%>
 
 	<div id="header">
@@ -51,15 +51,15 @@
 	</div>
 	<div id="sidebar-left">
 		<%
-			EmployeeService employeeService = new EmployeeServiceImpl();
+		EmployeeService employeeService = new EmployeeServiceImpl();
 		%>
 		<%@include file="/WEB-INF/nav/sidebarNav.html"%>
 		<%@include file="/WEB-INF/modal/quote.jsp"%>
 	</div>
 	<div id="main">
 		<%
-			String message = (String) request.getAttribute("quoteMsg");
-			if (message != null) {
+		String message = (String) request.getAttribute("quoteMsg");
+		if (message != null) {
 		%>
 
 		<div class="alert alert-warning alert-dismissible fade show"
@@ -71,7 +71,7 @@
 			</button>
 		</div>
 		<%
-			}
+		}
 		%>
 
 		<div class="container">
@@ -144,8 +144,8 @@
 									</thead>
 									<tbody class="products-rows">
 										<%
-											List<Products> listProducts = employeeService.listProducts();
-											for (Products product : listProducts) {
+										List<Products> listProducts = employeeService.listProducts();
+										for (Products product : listProducts) {
 										%>
 										<tr class="product-row">
 											<th class="product-id"><%=product.getProductID()%></th>
@@ -161,7 +161,7 @@
 										</tr>
 
 										<%
-											}
+										}
 										%>
 
 
@@ -201,6 +201,8 @@
 										id="totalOrderValue" name="totalOrderValue" readonly>
 								</div>
 							</div>
+							MAP <input type="text" class="form-control"
+								id="product-quantity-map" name="product-quantity-map">
 						</div>
 						<br />
 
@@ -211,8 +213,7 @@
 			</div>
 		</div>
 
-		MAP <input type="text" class="form-control" id="product-quantity-map"
-			name="product-quantity-map">
+
 
 
 	</div>

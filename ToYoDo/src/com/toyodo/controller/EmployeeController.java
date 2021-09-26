@@ -3,6 +3,9 @@ package com.toyodo.controller;
 import java.io.IOException;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -10,6 +13,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import com.toyodo.model.Invoice;
 import com.toyodo.model.Order;
@@ -84,11 +91,26 @@ public class EmployeeController extends HttpServlet {
 			System.out.println(shippingCost);
 			double totalOrderValue = Double.parseDouble(request.getParameter("totalOrderValue"));
 			System.out.println(totalOrderValue);
+
+			String quantityJson = request.getParameter("product-quantity-map");
+
+			JSONParser parser = new JSONParser();
+			Map<String, Integer> productQuantity = new HashMap<String, Integer>();
 			
+			try {
+				Object selectedProducts = parser.parse(quantityJson);
+				JSONObject obj = (JSONObject) selectedProducts;
+				JSONObject obj2 = (JSONObject) obj.get("product_map");
+				Set<String> keys = obj2.keySet();
+				for(String key: keys) {
+					if(Integer.parseInt((String)obj2.get(key)) > 0)
+						productQuantity.put(key, Integer.parseInt((String)obj2.get(key)));
+				}
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
-			
-			int quantity = Integer.parseInt(request.getParameter("quantity"));
-			System.out.println("Quantity: " + quantity);
 
 			ExternalService external = new ExternalServiceImpl();
 			EmployeeService employeeService = new EmployeeServiceImpl();
@@ -103,7 +125,7 @@ public class EmployeeController extends HttpServlet {
 
 			// get the name of each products added via check-box
 			// convert the list of the products (product_id) to string type
-			String[] batchProduct = request.getParameterValues("batchProduct");
+			Set<String> batchProduct = productQuantity.keySet();
 			String listOfProduct = "";
 			for (String list : batchProduct) {
 				listOfProduct += list + "  ";
@@ -130,7 +152,7 @@ public class EmployeeController extends HttpServlet {
 //			Quote quote = new Quote(orderDate, customerID, customerName, customerGSTNo, customerShippingAddress,
 //					customerCity, customerPhone, customerEmail, customerPincode, shippingCost, totalOrderValue, status);
 			Order order = new Order(orderDate, orderDatetime, customerID, customerName, customerShippingAddress,
-					listOfProduct, totalOrderValue, shippingCost, shippingAgency, status);
+					listOfProduct, productQuantity, totalOrderValue, shippingCost, shippingAgency, status);
 			Invoice invoice = new Invoice(invoiceDate, orderDatetime, customerID, customerName, listOfProduct, gst,
 					typeOfGST, totalGSTAmount, totalInvoiceValue, status);
 

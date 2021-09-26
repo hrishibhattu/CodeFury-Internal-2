@@ -2,6 +2,7 @@ package com.toyodo.model;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.Map;
 
 public class Order {
 	private String orderID;
@@ -11,6 +12,15 @@ public class Order {
 	private String customerName;
 	private String customerShippingAddress;
 	private String listOfProducts;
+	private Map<String, Integer> mapOfProducts;
+	public Map<String, Integer> getMapOfProducts() {
+		return mapOfProducts;
+	}
+
+	public void setMapOfProducts(Map<String, Integer> mapOfProducts) {
+		this.mapOfProducts = mapOfProducts;
+	}
+
 	private double totalOrderValue;
 	private double shippingCost;
 	private String shippingAgency;
@@ -105,7 +115,7 @@ public class Order {
 	}
 
 	public Order(String orderID, Date orderDate, Timestamp orderDatetime, String customerID, String customerName,
-			String customerShippingAddress, String listOfProducts, double totalOrderValue, double shippingCost,
+			String customerShippingAddress, String listOfProducts, Map<String, Integer> mapOfProducts, double totalOrderValue, double shippingCost,
 			String shippingAgency, String status) {
 		super();
 		this.orderID = orderID;
@@ -115,6 +125,7 @@ public class Order {
 		this.customerName = customerName;
 		this.customerShippingAddress = customerShippingAddress;
 		this.listOfProducts = listOfProducts;
+		this.mapOfProducts = mapOfProducts;
 		this.totalOrderValue = totalOrderValue;
 		this.shippingCost = shippingCost;
 		this.shippingAgency = shippingAgency;
@@ -122,7 +133,7 @@ public class Order {
 	}
 
 	public Order(Date orderDate, Timestamp orderDatetime, String customerID, String customerName,
-			String customerShippingAddress, String listOfProducts, double totalOrderValue, double shippingCost,
+			String customerShippingAddress, String listOfProducts, Map<String, Integer> mapOfProducts, double totalOrderValue, double shippingCost,
 			String shippingAgency, String status) {
 		super();
 		this.orderDate = orderDate;
@@ -131,6 +142,7 @@ public class Order {
 		this.customerName = customerName;
 		this.customerShippingAddress = customerShippingAddress;
 		this.listOfProducts = listOfProducts;
+		this.mapOfProducts = mapOfProducts;
 		this.totalOrderValue = totalOrderValue;
 		this.shippingCost = shippingCost;
 		this.shippingAgency = shippingAgency;
