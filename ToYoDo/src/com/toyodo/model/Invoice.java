@@ -2,6 +2,7 @@ package com.toyodo.model;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.List;
 
 public class Invoice {
 	private int invoiceID;
@@ -140,5 +141,27 @@ public class Invoice {
 		this.totalInvoiceValue = totalInvoiceValue;
 		this.status = status;
 	}
+	
+	// invoice generation
+	
+	private Order order;
+	private List<Products> product;
+
+	public Order getOrder() {
+		return order;
+	}
+
+	public void setOrder(Order order) {
+		this.order = order;
+	}
+
+	public List<Products> getProduct() {
+		return product;
+	}
+
+	public void setProduct(List<Products> product) {
+		this.product = product;
+	}
+	
 	
 }

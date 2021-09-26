@@ -14,6 +14,7 @@ import java.util.regex.Pattern;
 
 import com.toyodo.dao.ExternalDAO;
 import com.toyodo.model.Invoice;
+import com.toyodo.model.Order;
 import com.toyodo.model.Products;
 import com.toyodo.utils.DBConnection;
 
@@ -171,23 +172,19 @@ public class ExternalDAOImpl implements ExternalDAO {
 	public Invoice viewInvoice(Timestamp orderDatetime, Date orderDate) {
 		createConnection();
 		Invoice invoice = null;
-		final String strsql = "SELECT * FROM `invoice` WHERE `order_datetime` = ?";
+		Order order = null;
+		List <Products> product = new ArrayList<Products>();
+		final String strsql = "select * from `invoice` inner join `order` inner join `order_product_util` on `invoice`.`order_datetime` = `order`.`order_datetime` AND `order`.`order_id` = `order_product_util`.`order_id` WHERE `invoice`.`order_datetime` = ?";
+//		final String strsql = "SELECT * FROM `invoice` WHERE `order_datetime` = ?";
 		try {
 			ps = con.prepareStatement(strsql);
 			ps.setTimestamp(1, orderDatetime);
 			rs = ps.executeQuery();
 			System.out.println(ps);
-			if (rs.next()) {
+			
+			while (rs.next()) {
 
 				String status = rs.getString("status");
-//				PreparedStatement ps1 = con.prepareStatement("SELECT * FROM `order` WHERE `order_datetime`=" + orderDatetime);
-//				ResultSet rs1 = ps1.executeQuery();
-//				String orderID = "";
-//				if(rs1.next()) {
-//					orderID = rs1.getString("order_id");
-//				}
-//				String getProductsQuery = "SELECT * FROM `order_product_util` WHERE `order_id`=" + orderID;
-//				Statement stmt = con.createStatement();
 				java.util.Date today = new java.util.Date();
 				System.out.println("Test today with orderDate " + today);
 				if ((status.equals("Approved") || status.equals("Completed")) && !(orderDate.equals(today))) {
@@ -201,9 +198,13 @@ public class ExternalDAOImpl implements ExternalDAO {
 					invoice.setTotalGSTAmount(rs.getDouble("total_gst_amount"));
 					invoice.setTotalInvoiceValue(rs.getDouble("total_invoice_value"));
 					invoice.setStatus(rs.getString("status"));
-
+					invoice.setOrder(new Order(rs.getString("order_id"), rs.getDouble("shipping_cost"), rs.getString("shipping_agency")));
+					product.add(new Products(rs.getString("product_id")));
+					
+//					invoice.setProduct((rs.getString("product_id"));
 				}
 			}
+			invoice.setProduct(product);
 		} catch (SQLException sqlex) {
 			System.out.println(sqlex);
 		} finally {

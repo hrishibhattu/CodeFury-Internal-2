@@ -185,4 +185,11 @@ public class Order {
 		this.status = status;
 	}
 
+	public Order(String orderID, double shippingCost, String shippingAgency) {
+		super();
+		this.orderID = orderID;
+		this.shippingCost = shippingCost;
+		this.shippingAgency = shippingAgency;
+	}
+
 }

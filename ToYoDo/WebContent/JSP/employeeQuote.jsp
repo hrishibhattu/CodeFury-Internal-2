@@ -17,7 +17,34 @@
 	href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" />
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+	
+<!-- Working Day Calendar -->
 
+<script type="text/javascript">
+	<script>
+	var today = new Date();
+	var w = today.getDay();
+	var max = 3;
+	$(function() {
+		if (w == 0 || w == 1 || w == 2) {
+			max = 3;
+		}
+		if (w == 3 || w == 4 || w == 5) {
+			max = 5;
+		}
+		if (w == 6) {
+			max = 4;
+		}
+		$("#datepicker").datepicker({
+			minDate : 0,
+			beforeShowDay : function(d) {
+				var day = d.getDay();
+				return [ day != 0 && day != 6 ];
+			},
+		});
+		$('#datepicker').datepicker('option', 'maxDate', max);
+	});
+</script>
 <script>
 	var v = document.getElementsByClassName('addProducts');
 	console.log(v);
@@ -34,14 +61,14 @@
 <body>
 
 	<%
-	HttpSession httpSession = request.getSession(false);
-	String employeeID = (String) httpSession.getAttribute("loginID");
-	System.out.println(employeeID);
-	if (employeeID == null || httpSession.isNew()) {
-		RequestDispatcher rd = request.getRequestDispatcher("/JSP/index.jsp");
-		request.setAttribute("unauthorised_msg", Notify.UNAUTHORISED);
-		rd.forward(request, response);
-	}
+		HttpSession httpSession = request.getSession(false);
+		String employeeID = (String) httpSession.getAttribute("loginID");
+		System.out.println(employeeID);
+		if (employeeID == null || httpSession.isNew()) {
+			RequestDispatcher rd = request.getRequestDispatcher("/JSP/index.jsp");
+			request.setAttribute("unauthorised_msg", Notify.UNAUTHORISED);
+			rd.forward(request, response);
+		}
 	%>
 
 	<div id="header">
@@ -51,15 +78,15 @@
 	</div>
 	<div id="sidebar-left">
 		<%
-		EmployeeService employeeService = new EmployeeServiceImpl();
+			EmployeeService employeeService = new EmployeeServiceImpl();
 		%>
 		<%@include file="/WEB-INF/nav/sidebarNav.html"%>
 		<%@include file="/WEB-INF/modal/quote.jsp"%>
 	</div>
 	<div id="main">
 		<%
-		String message = (String) request.getAttribute("quoteMsg");
-		if (message != null) {
+			String message = (String) request.getAttribute("quoteMsg");
+			if (message != null) {
 		%>
 
 		<div class="alert alert-warning alert-dismissible fade show"
@@ -71,7 +98,7 @@
 			</button>
 		</div>
 		<%
-		}
+			}
 		%>
 
 		<div class="container">
@@ -144,8 +171,8 @@
 									</thead>
 									<tbody class="products-rows">
 										<%
-										List<Products> listProducts = employeeService.listProducts();
-										for (Products product : listProducts) {
+											List<Products> listProducts = employeeService.listProducts();
+											for (Products product : listProducts) {
 										%>
 										<tr class="product-row">
 											<th class="product-id"><%=product.getProductID()%></th>
@@ -161,7 +188,7 @@
 										</tr>
 
 										<%
-										}
+											}
 										%>
 
 
@@ -201,8 +228,8 @@
 										id="totalOrderValue" name="totalOrderValue" readonly>
 								</div>
 							</div>
-							MAP <input type="text" class="form-control"
-								id="product-quantity-map" name="product-quantity-map">
+						 <input type="text" class="form-control"
+								id="product-quantity-map" name="product-quantity-map" hidden>
 						</div>
 						<br />
 

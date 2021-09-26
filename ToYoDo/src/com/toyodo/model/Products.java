@@ -50,4 +50,8 @@ public class Products {
 		this.category = category;
 	}
 
+	public Products(String product_id) {
+		this.productID = product_id;
+	}
+
 }
