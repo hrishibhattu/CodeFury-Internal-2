@@ -22,7 +22,7 @@ public interface EmployeeDAO {
 //	int createQuote(Quote quote);
 
 //	List<Quote> viewQuote();
-	
+
 	public void importProducts(List<Products> products);
 
 	int createInvoice(Invoice invoice);

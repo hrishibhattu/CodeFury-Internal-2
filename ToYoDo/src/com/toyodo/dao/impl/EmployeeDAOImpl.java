@@ -134,7 +134,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 		createConnection();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		
+
 		final String strsql = "INSERT INTO `order`(`order_date`, `order_datetime`, `customer_id`, `total_order_value`, `shipping_cost`, `shipping_agency`, `status`) VALUES (?, ?, ?, ?, ?, ?, ?)";
 //		String utilTable = "INSERT INTO `customer_order_invoice` (`customer_id`) VALUES (?)";
 //		String utilTable = "INSERT INTO `customer_order_invoice` (`customer_id`) VALUES (?)";
@@ -154,23 +154,24 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 			if (ps.executeUpdate() > 0) {
 				System.out.println("Done");
 			}
-			String getOrderId = "SELECT `order_id` FROM `order` WHERE `order_datetime` = " + order.getOrderDatetime().toString();
+			String getOrderId = "SELECT `order_id` FROM `order` WHERE `order_datetime` = "
+					+ order.getOrderDatetime().toString();
 			ResultSet rs2 = ps.executeQuery(getOrderId);
 			int order_id = 0;
-			while(rs2.next()) {
+			while (rs2.next()) {
 				order_id = rs2.getInt("order_id");
 			}
 			String listOfProducts = order.getListOfProducts();
 			String[] products = listOfProducts.split(" ");
 			PreparedStatement ps1;
-			for(String product: products) {
+			for (String product : products) {
 				String insertProduct = "INSERT INTO `order_product_util` (order_id, product_id) VALUES (?, ?)";
 				ps1 = con.prepareStatement(insertProduct);
 				ps1.setInt(1, order_id);
 				ps1.setString(2, product);
 				ps1.executeUpdate();
 			}
-			
+
 		} catch (SQLException sqlex) {
 			System.out.println(sqlex);
 		} finally {
@@ -362,7 +363,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 		}
 		return 0;
 	}
-	
+
 	@Override
 	public void importProducts(List<Products> products) {
 		createConnection();
@@ -370,7 +371,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 		String insertSql = "INSERT INTO products VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE name=?, price=?, category=?";
 		try {
 			ps = con.prepareStatement(insertSql);
-			for(Products p: products) {
+			for (Products p : products) {
 				ps.setString(1, p.getProductID());
 				ps.setString(2, p.getName());
 				ps.setDouble(3, p.getPrice());
@@ -380,7 +381,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 				ps.setString(7, p.getCategory());
 				ps.execute();
 			}
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {

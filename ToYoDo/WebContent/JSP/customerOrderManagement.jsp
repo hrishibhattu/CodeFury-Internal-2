@@ -14,14 +14,14 @@
 </head>
 <body>
 	<%
-		HttpSession httpSession = request.getSession(false);
-		String customerID = (String) httpSession.getAttribute("loginID");
-		System.out.println(customerID);
-		if (customerID == null || httpSession.isNew()) {
-			RequestDispatcher rd = request.getRequestDispatcher("/ToYoDo/JSP/index.jsp");
-			request.setAttribute("unauthorised_msg", Notify.UNAUTHORISED);
-			rd.forward(request, response);
-		}
+	HttpSession httpSession = request.getSession(false);
+	String customerID = (String) httpSession.getAttribute("loginID");
+	System.out.println(customerID);
+	if (customerID == null || httpSession.isNew()) {
+		RequestDispatcher rd = request.getRequestDispatcher("/ToYoDo/JSP/index.jsp");
+		request.setAttribute("unauthorised_msg", Notify.UNAUTHORISED);
+		rd.forward(request, response);
+	}
 	%>
 
 

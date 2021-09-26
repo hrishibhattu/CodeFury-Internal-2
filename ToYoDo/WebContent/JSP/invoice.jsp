@@ -24,27 +24,27 @@
 </head>
 <body>
 	<%
-		HttpSession httpSession = request.getSession(false);
-		String employeeID = (String) httpSession.getAttribute("loginID");
-		System.out.println(employeeID);
-		if (employeeID == null || httpSession.isNew()) {
-			RequestDispatcher rd = request.getRequestDispatcher("/JSP/index.jsp");
-			request.setAttribute("unauthorised_msg", Notify.UNAUTHORISED);
-			rd.forward(request, response);
-		}
+	HttpSession httpSession = request.getSession(false);
+	String employeeID = (String) httpSession.getAttribute("loginID");
+	System.out.println(employeeID);
+	if (employeeID == null || httpSession.isNew()) {
+		RequestDispatcher rd = request.getRequestDispatcher("/JSP/index.jsp");
+		request.setAttribute("unauthorised_msg", Notify.UNAUTHORISED);
+		rd.forward(request, response);
+	}
 	%>
 	<%
-		Date orderDate = (Date) request.getAttribute("orderDate");
-		Timestamp orderDatetime = (Timestamp) request.getAttribute("orderDatetime");
+	Date orderDate = (Date) request.getAttribute("orderDate");
+	Timestamp orderDatetime = (Timestamp) request.getAttribute("orderDatetime");
 	%>
 
 	<%
-		ExternalService external = new ExternalServiceImpl();
-		Invoice invoice = external.viewInvoice(orderDatetime, orderDate);
+	ExternalService external = new ExternalServiceImpl();
+	Invoice invoice = external.viewInvoice(orderDatetime, orderDate);
 
-		if (invoice == null) {
-			System.out.println("Not Available check after 24hrs");
-		} else {
+	if (invoice == null) {
+		System.out.println("Not Available check after 24hrs");
+	} else {
 	%>
 
 	<div class="container">
@@ -73,8 +73,8 @@
 
 
 						<%
-							List<Products> products = external.listProducts(invoice.getListOfProducts());
-								for (Products product : products) {
+						List<Products> products = external.listProducts(invoice.getListOfProducts());
+						for (Products product : products) {
 						%>
 						<tr>
 							<th><%=product.getProductID()%></th>
@@ -84,7 +84,7 @@
 						</tr>
 
 						<%
-							}
+						}
 						%>
 
 					</table>
@@ -117,7 +117,7 @@
 	</div>
 
 	<%
-		}
+	}
 	%>
 
 

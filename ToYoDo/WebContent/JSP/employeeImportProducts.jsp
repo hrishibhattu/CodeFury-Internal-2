@@ -48,7 +48,8 @@
 		<%@include file="/WEB-INF/nav/sidebarNav.html"%>
 	</div>
 	<div id="main">
-		<form class="row g-3" method="POST" action="/ToYoDo/EmployeeImportProducts" enctype="multipart/form-data">
+		<form class="row g-3" method="POST"
+			action="/ToYoDo/EmployeeImportProducts" enctype="multipart/form-data">
 			<div class="mb-3">
 				<label for="formFile" class="form-label">Select JSON file to
 					import products</label> <input class="form-control" type="file"
@@ -58,13 +59,8 @@
 				<button type="submit" class="btn btn-primary">Submit</button>
 			</div>
 			<div class="row g-3">
-				<label class="form-label">
-					Succeeded:
-					<%= request.getAttribute("succeeded") %> 
-				</label>
-				<label class="form-label">
-					Failed:
-					<%= request.getAttribute("failed") %> 
+				<label class="form-label"> Succeeded: <%=request.getAttribute("succeeded")%>
+				</label> <label class="form-label"> Failed: <%=request.getAttribute("failed")%>
 				</label>
 			</div>
 		</form>

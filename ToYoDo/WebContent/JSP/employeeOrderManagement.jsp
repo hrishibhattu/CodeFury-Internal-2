@@ -28,14 +28,14 @@
 <body>
 
 	<%
-		HttpSession httpSession = request.getSession(false);
-		String employeeID = (String) httpSession.getAttribute("loginID");
-		System.out.println(employeeID);
-		if (employeeID == null || httpSession.isNew()) {
-			RequestDispatcher rd = request.getRequestDispatcher("/JSP/index.jsp");
-			request.setAttribute("unauthorised_msg", Notify.UNAUTHORISED);
-			rd.forward(request, response);
-		}
+	HttpSession httpSession = request.getSession(false);
+	String employeeID = (String) httpSession.getAttribute("loginID");
+	System.out.println(employeeID);
+	if (employeeID == null || httpSession.isNew()) {
+		RequestDispatcher rd = request.getRequestDispatcher("/JSP/index.jsp");
+		request.setAttribute("unauthorised_msg", Notify.UNAUTHORISED);
+		rd.forward(request, response);
+	}
 	%>
 
 
@@ -46,7 +46,7 @@
 	</div>
 	<div id="sidebar-left">
 		<%
-			EmployeeService employeeService = new EmployeeServiceImpl();
+		EmployeeService employeeService = new EmployeeServiceImpl();
 		%>
 		<%@include file="/WEB-INF/nav/sidebarNav.html"%>
 		<%@include file="/WEB-INF/modal/quote.jsp"%>

@@ -28,14 +28,14 @@
 <body>
 
 	<%
-		HttpSession httpSession = request.getSession(false);
-		String employeeID = (String) httpSession.getAttribute("loginID");
-		System.out.println(employeeID);
-		if (employeeID == null || httpSession.isNew()) {
-			RequestDispatcher rd = request.getRequestDispatcher("/JSP/index.jsp");
-			request.setAttribute("unauthorised_msg", Notify.UNAUTHORISED);
-			rd.forward(request, response);
-		}
+	HttpSession httpSession = request.getSession(false);
+	String employeeID = (String) httpSession.getAttribute("loginID");
+	System.out.println(employeeID);
+	if (employeeID == null || httpSession.isNew()) {
+		RequestDispatcher rd = request.getRequestDispatcher("/JSP/index.jsp");
+		request.setAttribute("unauthorised_msg", Notify.UNAUTHORISED);
+		rd.forward(request, response);
+	}
 	%>
 
 	<div id="header">
@@ -43,7 +43,7 @@
 	</div>
 	<div id="sidebar-left">
 		<%
-			EmployeeService employeeService = new EmployeeServiceImpl();
+		EmployeeService employeeService = new EmployeeServiceImpl();
 		%>
 		<%@include file="/WEB-INF/nav/sidebarNav.html"%>
 		<%@include file="/WEB-INF/modal/quote.jsp"%>
@@ -68,8 +68,8 @@
 				</thead>
 				<tbody>
 					<%
-						List<Order> listOrder = employeeService.listOrder();
-						for (Order order : listOrder) {
+					List<Order> listOrder = employeeService.listOrder();
+					for (Order order : listOrder) {
 					%>
 					<tr>
 						<td><%=order.getOrderID()%></td>
@@ -88,7 +88,7 @@
 
 
 					<%
-						}
+					}
 					%>
 				</tbody>
 			</table>

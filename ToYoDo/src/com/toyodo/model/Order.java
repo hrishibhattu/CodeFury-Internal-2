@@ -121,8 +121,9 @@ public class Order {
 		this.status = status;
 	}
 
-	public Order(Date orderDate, Timestamp orderDatetime, String customerID, String customerName, String customerShippingAddress,
-			String listOfProducts, double totalOrderValue, double shippingCost, String shippingAgency, String status) {
+	public Order(Date orderDate, Timestamp orderDatetime, String customerID, String customerName,
+			String customerShippingAddress, String listOfProducts, double totalOrderValue, double shippingCost,
+			String shippingAgency, String status) {
 		super();
 		this.orderDate = orderDate;
 		this.orderDatetime = orderDatetime;

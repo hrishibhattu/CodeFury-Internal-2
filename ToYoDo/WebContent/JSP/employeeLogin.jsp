@@ -38,8 +38,8 @@
 	<%@include file="/WEB-INF/nav/indexNav.html"%>
 
 	<%
-		String loginStatus = (String) request.getAttribute("loginStatus");
-		if (loginStatus != null) {
+	String loginStatus = (String) request.getAttribute("loginStatus");
+	if (loginStatus != null) {
 	%>
 	<div class="alert alert-danger alert-dismissible fade show"
 		role="alert">
@@ -50,7 +50,7 @@
 		</button>
 	</div>
 	<%
-		}
+	}
 	%>
 
 	<div class="card border-info container" style="max-width: 46rem;">

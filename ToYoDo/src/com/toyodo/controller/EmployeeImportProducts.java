@@ -26,11 +26,10 @@ import com.toyodo.model.Products;
 import com.toyodo.service.EmployeeService;
 import com.toyodo.service.impl.EmployeeServiceImpl;
 
-@MultipartConfig(
-		  fileSizeThreshold = 1024 * 1024 * 1, // 1 MB
-		  maxFileSize = 1024 * 1024 * 10,      // 10 MB
-		  maxRequestSize = 1024 * 1024 * 100   // 100 MB
-		)
+@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 1, // 1 MB
+		maxFileSize = 1024 * 1024 * 10, // 10 MB
+		maxRequestSize = 1024 * 1024 * 100 // 100 MB
+)
 @WebServlet("/EmployeeImportProducts")
 public class EmployeeImportProducts extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -71,7 +70,8 @@ public class EmployeeImportProducts extends HttpServlet {
 		try {
 			JSONParser parser = new JSONParser();
 			JSONArray products;
-			products = (JSONArray) parser.parse(new FileReader("/Users/hrishikesh/Developer/hsbc-training/" + fileName));
+			products = (JSONArray) parser
+					.parse(new FileReader("/Users/hrishikesh/Developer/hsbc-training/" + fileName));
 
 			// Create a map with frequency counts of product_id's
 			for (Object o : products) {
@@ -102,7 +102,7 @@ public class EmployeeImportProducts extends HttpServlet {
 				String name = (String) jsonProduct.get("name");
 
 				String category = (String) jsonProduct.get("category");
-				
+
 //				Long p = jsonProduct.get("price");
 				Long p = (Long) jsonProduct.get("price");
 				double price = (double) p;

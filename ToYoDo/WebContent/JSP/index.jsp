@@ -14,8 +14,8 @@
 	<h1>ToYoDo - To Your Door</h1>
 
 	<%
-		String loginID = (String) request.getAttribute("employeeID");
-		if (loginID != null) {
+	String loginID = (String) request.getAttribute("employeeID");
+	if (loginID != null) {
 	%>
 	<div class="alert alert-danger alert-dismissible fade show"
 		role="alert">
@@ -27,7 +27,7 @@
 	</div>
 
 	<%
-		}
+	}
 	%>
 
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
