@@ -8,6 +8,8 @@ public class Invoice {
 	private Date invoiceDate;
 	private Timestamp orderDatetime;
 	private String customerID;
+	private String customerName;
+	private String listOfProducts;
 	private double gst;
 	private String typeOfGST;
 	private double totalGSTAmount;
@@ -86,16 +88,52 @@ public class Invoice {
 		this.status = status;
 	}
 
+	public String getCustomerName() {
+		return customerName;
+	}
+
+	public void setCustomerName(String customerName) {
+		this.customerName = customerName;
+	}
+
+	public String getListOfProducts() {
+		return listOfProducts;
+	}
+
+	public void setListOfProducts(String listOfProducts) {
+		this.listOfProducts = listOfProducts;
+	}
+
 	public Invoice() {
 		super();
 	}
 
-	public Invoice(Date invoiceDate, Timestamp orderDatetime, String customerID, double gst,
-			String typeOfGST, double totalGSTAmount, double totalInvoiceValue, String status) {
+	public Invoice(int invoiceID, Date invoiceDate, Timestamp orderDatetime, String customerID, String customerName,
+			String listOfProducts, double gst, String typeOfGST, double totalGSTAmount, double totalInvoiceValue,
+			String status) {
+		super();
+		this.invoiceID = invoiceID;
+		this.invoiceDate = invoiceDate;
+		this.orderDatetime = orderDatetime;
+		this.customerID = customerID;
+		this.customerName = customerName;
+		this.listOfProducts = listOfProducts;
+		this.gst = gst;
+		this.typeOfGST = typeOfGST;
+		this.totalGSTAmount = totalGSTAmount;
+		this.totalInvoiceValue = totalInvoiceValue;
+		this.status = status;
+	}
+
+	public Invoice(Date invoiceDate, Timestamp orderDatetime, String customerID, String customerName,
+			String listOfProducts, double gst, String typeOfGST, double totalGSTAmount, double totalInvoiceValue,
+			String status) {
 		super();
 		this.invoiceDate = invoiceDate;
 		this.orderDatetime = orderDatetime;
 		this.customerID = customerID;
+		this.customerName = customerName;
+		this.listOfProducts = listOfProducts;
 		this.gst = gst;
 		this.typeOfGST = typeOfGST;
 		this.totalGSTAmount = totalGSTAmount;
@@ -103,25 +141,4 @@ public class Invoice {
 		this.status = status;
 	}
 	
-	public Invoice(int invoiceID, Date invoiceDate, Timestamp orderDatetime, String customerID, String customerName,
-			double gst, String typeOfGST, double totalGSTAmount, double totalInvoiceValue, String status) {
-		super();
-		this.invoiceID = invoiceID;
-		this.invoiceDate = invoiceDate;
-		this.orderDatetime = orderDatetime;
-		this.customerID = customerID;
-		this.gst = gst;
-		this.typeOfGST = typeOfGST;
-		this.totalGSTAmount = totalGSTAmount;
-		this.totalInvoiceValue = totalInvoiceValue;
-		this.status = status;
-	}
-
-	@Override
-	public String toString() {
-		return "Invoice [invoiceID=" + invoiceID + ", invoiceDate=" + invoiceDate + ", orderDatetime=" + orderDatetime
-				+ ", customerID=" + customerID + ", gst=" + gst + ", typeOfGST=" + typeOfGST + ", totalGSTAmount="
-				+ totalGSTAmount + ", totalInvoiceValue=" + totalInvoiceValue + ", status=" + status + "]";
-	}
-
 }

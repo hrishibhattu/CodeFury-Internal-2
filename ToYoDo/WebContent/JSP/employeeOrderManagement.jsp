@@ -64,45 +64,43 @@
 				<div class="card shadow">
 					<div class="card-body">
 						<h5 class="card-title">Last Login Details</h5>
-						<p class="card-text"><table class="container">
+						<div class="card-text">
+						<table class="container">
 							<thead>
-							<tr>
-								<th>Current Access</th>
-								<td><%=formatter.format(currentAccess)%></td>
-							</tr>
-							<tr>
-								<th>Last Accessed</th>
-								<td><%=lastAccess%></td>
-							</tr>
-							<tr>
-						
+								<tr>
+									<th>Current Access</th>
+									<td><%=formatter.format(currentAccess)%></td>
+								</tr>
+								<tr>
+									<th>Last Accessed</th>
+									<td><%=lastAccess%></td>
+								</tr>
+								<tr>
 							</thead>
-					</table>
-						</p>
-						
+						</table>
+						</div>
+
 					</div>
 				</div>
 			</div>
 			<div class="col-sm-6">
 				<div class="card shadow">
 					<div class="card-body">
-						<h5 class="card-title">Profile Information</h5>
+						<h5 class="card-title">Profile</h5>
 						<p class="card-text">
+						<table class="container">
+							<thead>
+								<tr>
+									<th>Employee ID</th>
+									<td><%=employeeID%></td>
+								</tr>
+								<tr>
+									<th>Employee Name</th>
+									<td><%=employeeService.getEmployeeName(employeeID)%></td>
+								</tr>
 
-					<table class="container">
-						<thead>
-							<tr>
-								<th>Employee Id</th>
-								<td><%=employeeID%></td>
-							</tr>
-							<tr>
-								<th>Employee Name</th>
-								<td><%=employeeService.getEmployeeName(employeeID)%></td>
-							</tr>
-						
-						</thead>
-					</table>
-					</p>
+							</thead>
+						</table>
 					</div>
 				</div>
 			</div>

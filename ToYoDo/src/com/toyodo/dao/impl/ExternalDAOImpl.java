@@ -149,10 +149,10 @@ public class ExternalDAOImpl implements ExternalDAO {
 	}
 
 	@Override
-	public double calculateGSTRate(double price) {
+	public double calculateGSTRate(double price, int quantity) {
 		// GST rates for the product
 		// flat rate of 10% for all types of products
-		return (price * 0.01);
+		return (price * quantity * 0.1);
 	}
 
 	@Override

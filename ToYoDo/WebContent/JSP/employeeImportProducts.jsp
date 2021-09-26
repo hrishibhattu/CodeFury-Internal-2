@@ -12,17 +12,13 @@
 <title>Quote</title>
 <link href="/ToYoDo/CSS/layout.css" rel="stylesheet" type="text/css"
 	media="all" />
+<link href="/ToYoDo/CSS/style.css" rel="stylesheet" type="text/css"
+	media="all" />
 <link rel="stylesheet"
-	href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+	href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" />
 <link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+
 </head>
 <body>
 
@@ -50,43 +46,49 @@
 	<div id="main">
 
 
-		<div class="card mb-3">
-			<img class="card-img-top" src="/ToYoDo/IMG/img (2).jpg" width="100px"
-				height="300px" alt="Card image cap">
-			<div class="card-img-overlay">
-				<h5 class="card-title">Card title</h5>
-				<div class="card-text">
-				<form class="row g-3" method="POST"
-					action="/ToYoDo/EmployeeImportProducts"
-					enctype="multipart/form-data">
-					<div class="mb-3 custom-file">
+
+		<form class="row g-3" method="POST"
+			action="/ToYoDo/EmployeeImportProducts" enctype="multipart/form-data">
+<div class="row">
+			<div class="card">
+				<div class="card-header">Import Product</div>
+				<div class="card-body">
+
+					<p class="card-text">
 						<label for="formFile" class="form-label">Select JSON file
-							to import products</label> <input class="form-control" type="file"
-							accept="application/JSON" id="importFile" name="importFile">
-					</div>
-					<div class="col-12">
-						<button type="submit" class="btn btn-primary">Submit</button>
-					</div>
-				</form>
+							to import products<hr/></label> <input class="form-control" type="file"
+							accept="application/JSON" id="importFile" name="importFile" required>
+					</p>
 
 
-				</div>
-				<p class="card-text">
-					<label class="form-label"> Succeeded: <%=request.getAttribute("succeeded")%>
-					</label> <br />
-					<label class="form-label"> Failed: <%=request.getAttribute("failed")%>
+
+					<button type="submit" class="btn btn-info">Import</button>
+
+
+
+					<footer>Product Import Status</footer>
+					<label class="form-label"> <a href="#"
+						class="badge badge-success">Succeeded: <%=request.getAttribute("succeeded")%></a>
+					</label> <label class="form-label"> <a href="#"
+						class="badge badge-danger"> Failed: <%=request.getAttribute("failed")%></a>
 					</label>
-				</p>
+				</div>
 			</div>
-		</div>
-
-
-
+</div>
+		</form>
 	</div>
 
 	<div id="footer">
 		Copyright &copy; 2021 ToYoDo<br /> All rights reserved. Powered by
 		JAVATAR
 	</div>
+
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+	<script
+		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </body>
 </html>

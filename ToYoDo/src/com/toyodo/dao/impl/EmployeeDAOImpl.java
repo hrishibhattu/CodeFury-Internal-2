@@ -16,7 +16,6 @@ import com.toyodo.model.Employee;
 import com.toyodo.model.Invoice;
 import com.toyodo.model.Order;
 import com.toyodo.model.Products;
-import com.toyodo.model.Quote;
 import com.toyodo.utils.DBConnection;
 
 /*
@@ -135,7 +134,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 		createConnection();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-
+		PreparedStatement ps1;
 		final String strsql = "INSERT INTO `order`(`order_date`, `order_datetime`, `customer_id`, `total_order_value`, `shipping_cost`, `shipping_agency`, `status`) VALUES (?, ?, ?, ?, ?, ?, ?)";
 		try {
 			ps = con.prepareStatement(strsql);
@@ -150,15 +149,18 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 			if (ps.executeUpdate() > 0) {
 				System.out.println("Done");
 			}
-			String getOrderId = "SELECT `order_id` FROM `order` WHERE `order_datetime` = "
-					+ order.getOrderDatetime().toString();
-			ResultSet rs2 = ps.executeQuery(getOrderId);
+			
+			final String getOrderId = "SELECT `order_id` FROM `order` WHERE `order_datetime` = ?";
+			Timestamp orderDateTime = order.getOrderDatetime();
+			ps1 = con.prepareStatement(getOrderId);
+			ps1.setTimestamp(1, orderDateTime);
+			ResultSet rs2 = ps1.executeQuery();
+			
 			int order_id = 0;
 			while (rs2.next()) {
 				order_id = rs2.getInt("order_id");
 			}
 			Map<String, Integer> mapOfProducts = order.getMapOfProducts();
-			PreparedStatement ps1;
 			for (String product : mapOfProducts.keySet()) {
 				final String insertProduct = "INSERT INTO `order_product_util` (order_id, product_id, quantity) VALUES (?, ?, ?)";
 				ps1 = con.prepareStatement(insertProduct);
@@ -311,93 +313,6 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 		return lastLoginTime;
 	}
 
-//	@Override
-//	public int createQuote(Quote quote) {
-//		createConnection();
-//		PreparedStatement ps = null;
-//		ResultSet rs = null;
-//		final String strsql = "INSERT INTO `order` (`order_date`, `customer_id`, `customer_name`, `customer_gst_no`, `customer_shipping_address`, `customer_city`, `customer_phone_number`, `customer_email`, `customer_pincode`, `shipping_cost`, `total_order_value`, `status`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-//		try {
-//			ps = con.prepareStatement(strsql);
-//			ps.setDate(1, quote.getOrder_date());
-//			ps.setString(2, quote.getCustomer_id());
-//			ps.setString(3, quote.getCustomer_name());
-//			ps.setString(4, quote.getCustomer_gst_no());
-//			ps.setString(5, quote.getCustomer_shipping_address());
-//			ps.setString(6, quote.getCustomer_city());
-//			ps.setString(7, quote.getCustomer_phone_number());
-//			ps.setString(8, quote.getCustomer_email());
-//			ps.setInt(9, quote.getCustomer_pincode());
-//			ps.setDouble(10, quote.getShipping_cost());
-//			ps.setDouble(11, quote.getTotal_order_value());
-//			ps.setString(12, quote.getStatus());
-//			System.out.println(ps);
-//			if (ps.executeUpdate() > 0) {
-//				return 1;
-//			}
-//		} catch (SQLException sqlex) {
-//			System.out.println(sqlex);
-//		} finally {
-//			if (ps != null) {
-//				try {
-//					ps.close();
-//				} catch (SQLException e) {
-//					e.printStackTrace();
-//				}
-//			}
-//			if (rs != null) {
-//				try {
-//					rs.close();
-//				} catch (SQLException e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		}
-//		return 0;
-//	}
-
-//	@Override
-//	public List<Quote> viewQuote() {
-//		createConnection();
-//		// clear the previous record on every request to avoid appending list of orders
-//		if (!listQuote.isEmpty())
-//			listQuote.clear();
-//
-//		PreparedStatement ps = null;
-//		ResultSet rs = null;
-//		Quote quote = null;
-//		final String strsql = "SELECT * FROM `quote`";
-//		try {
-//			ps = con.prepareStatement(strsql);
-//			rs = ps.executeQuery();
-//			while (rs.next()) {
-//				quote = new Quote(rs.getDate("order_date"), rs.getString("customer_id"), rs.getString("customer_name"),
-//						rs.getString("customer_gst_no"), rs.getString("customer_shipping_address"),
-//						rs.getString("customer_city"), rs.getString("customer_phone_number"),
-//						rs.getString("customer_email"), rs.getInt("customer_pincode"), rs.getDouble("shipping_cost"),
-//						rs.getDouble("total_order_value"), rs.getString("status"));
-//				listQuote.add(quote);
-//			}
-//		} catch (SQLException sqlex) {
-//			System.out.println(sqlex);
-//		} finally {
-//			if (ps != null) {
-//				try {
-//					ps.close();
-//				} catch (SQLException e) {
-//					e.printStackTrace();
-//				}
-//			}
-//			if (rs != null) {
-//				try {
-//					rs.close();
-//				} catch (SQLException e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		}
-//		return listQuote;
-//	}
 
 	@Override
 	public int createInvoice(Invoice invoice) {
@@ -410,8 +325,6 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 			ps.setDate(1, invoice.getInvoiceDate());
 			ps.setTimestamp(2, invoice.getOrderDatetime());
 			ps.setString(3, invoice.getCustomerID());
-//			ps.setString(4, invoice.getCustomerName());
-//			ps.setString(5, invoice.getListOfProducts());
 			ps.setDouble(4, invoice.getGst());
 			ps.setString(5, invoice.getTypeOfGST());
 			ps.setDouble(6, invoice.getTotalGSTAmount());

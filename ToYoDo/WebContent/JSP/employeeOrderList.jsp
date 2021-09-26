@@ -1,11 +1,9 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1"%>
+<%@page	import="java.util.*, java.io.*, com.toyodo.utils.*, com.toyodo.notification.*,com.toyodo.model.Employee, com.toyodo.model.Order, com.toyodo.model.Products"%>
 <%@page import="com.toyodo.model.Invoice"%>
 <%@page import="com.toyodo.service.impl.EmployeeServiceImpl"%>
 <%@page import="com.toyodo.service.EmployeeService"%>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
-<%@page
-	import="java.util.*, java.io.*, com.toyodo.utils.*, com.toyodo.notification.*,com.toyodo.model.Employee, com.toyodo.model.Order, com.toyodo.model.Products, com.toyodo.model.Quote"%>
-
 <!DOCTYPE html>
 <html>
 <head>

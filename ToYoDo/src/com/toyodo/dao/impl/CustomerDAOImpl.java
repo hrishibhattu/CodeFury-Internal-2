@@ -4,9 +4,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.toyodo.dao.CustomerDAO;
 import com.toyodo.model.Customer;
+import com.toyodo.model.Invoice;
+import com.toyodo.model.Order;
 import com.toyodo.utils.DBConnection;
 
 /*
@@ -18,6 +23,8 @@ public class CustomerDAOImpl implements CustomerDAO {
 	private Connection con;
 	private PreparedStatement ps;
 	private ResultSet rs;
+
+	private List<Order> listOrder = new ArrayList<Order>();
 
 	public static CustomerDAOImpl createObject() {
 		if (customerDAOImpl == null) {
@@ -40,7 +47,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 		try {
 			String strlogin = "SELECT * FROM `customer_login_credential` WHERE (`customer_id` = ? OR `name` = ?) AND `password` = ?";
 			ps = con.prepareStatement(strlogin);
-			ps.setString(1, customerLogin.getCustomer_id());
+			ps.setString(1, customerLogin.getCustomerID());
 			ps.setString(2, customerLogin.getName());
 			ps.setString(3, customerLogin.getPassword());
 			rs = ps.executeQuery();
@@ -53,6 +60,33 @@ public class CustomerDAOImpl implements CustomerDAO {
 		}
 		return credential;
 
+	}
+
+	@Override
+	public Customer searchCustomer(String customerID) {
+		createConnection();
+		Customer customer = null;
+		final String strlogin = "SELECT * FROM `customer` WHERE `customer_id` = ?";
+		try {
+			ps = con.prepareStatement(strlogin);
+			ps.setString(1, customerID);
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				customer = new Customer();
+				customer.setCustomerID(rs.getString("customer_id"));
+				customer.setName(rs.getString("name"));
+				customer.setGstNumber(rs.getString("gst"));
+				customer.setCity(rs.getString("city"));
+				customer.setEmail(rs.getString("email"));
+				customer.setPhone(rs.getString("phone"));
+				customer.setPincode(rs.getInt("pincode"));
+			}
+		} catch (SQLException sqlex) {
+			System.out.println(sqlex);
+		} finally {
+			closeConnection();
+		}
+		return customer;
 	}
 
 	@Override
@@ -102,6 +136,113 @@ public class CustomerDAOImpl implements CustomerDAO {
 	}
 
 	@Override
+	public List<Order> listOrder(String customerNameID) {
+
+		createConnection();
+		// clear the previous record on every request to avoid appending previous list
+		// of orders
+		if (!listOrder.isEmpty())
+			listOrder.clear();
+
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		Order order = null;
+		final String strsql = "SELECT * FROM `order` INNER JOIN `customer` ON `order`.`customer_id` = `customer`.`customer_id` WHERE `customer`.`customer_id` = ?";
+		try {
+			ps = con.prepareStatement(strsql);
+			ps.setString(1, customerNameID);
+			rs = ps.executeQuery();
+
+			while (rs.next()) {
+				String currOrderId = rs.getString("order_id");
+				String getProductsQuery = "SELECT * FROM `order_product_util` WHERE `order_id`=" + currOrderId;
+				Statement stmt = con.createStatement();
+				ResultSet rs1 = stmt.executeQuery(getProductsQuery);
+				String listOfProducts = "";
+				while (rs1.next()) {
+					listOfProducts += " " + rs1.getString("product_id");
+				}
+				order = new Order(rs.getString("order_id"), rs.getDate("order_date"), rs.getTimestamp("order_datetime"),
+						rs.getString("customer_id"), rs.getString("name"), rs.getString("address"), listOfProducts,
+						rs.getDouble("total_order_value"), rs.getDouble("shipping_cost"),
+						rs.getString("shipping_agency"), rs.getString("status"));
+				listOrder.add(order);
+			}
+		} catch (SQLException sqlex) {
+			System.out.println(sqlex);
+		} finally {
+			if (ps != null) {
+				try {
+					ps.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return listOrder;
+	}
+
+	@Override
+	public void updateStatus(Order order) {
+		createConnection();
+		PreparedStatement psv = null;
+		java.util.Date today = new java.util.Date();
+		try {
+			long timeDifference = today.getTime() - order.getOrderDatetime().getTime();
+			long daysDifference = (timeDifference / (1000 * 60 * 60 * 24)) % 365;
+			//	if current date is less than or equal to 30 days
+			//	the order gets approved
+			if (daysDifference <= 30) {
+				String query = "UPDATE `order` SET `status` = \"Approved\" WHERE `order_datetime`= ?";
+				String queryInv = "UPDATE `invoice` SET `status` = \"Approved\" WHERE `order_datetime`= ?";
+				ps = con.prepareStatement(query);
+				psv = con.prepareStatement(queryInv);
+				ps.setTimestamp(1, order.getOrderDatetime());
+				psv.setTimestamp(1, order.getOrderDatetime());
+				ps.executeUpdate();
+				psv.executeUpdate();
+			} 
+			//	if current date is more than 30 days
+			//	the order gets expired
+			else {
+				String query = "UPDATE `order` SET `status` = \"Expired\" WHERE `order_datetime`= ?";
+				String queryInv = "UPDATE `invoice` SET `status` = \"Expired\" WHERE `order_datetime`= ?";
+				ps = con.prepareStatement(query);
+				psv = con.prepareStatement(queryInv);
+				ps.setTimestamp(1, order.getOrderDatetime());
+				psv.setTimestamp(1, order.getOrderDatetime());
+				ps.executeUpdate();
+				psv.executeUpdate();
+			}
+
+		} catch (SQLException sqlex) {
+			System.out.println(sqlex);
+		} finally {
+			if (ps != null) {
+				try {
+					ps.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+
+	@Override
 	public String getCustomerDetailsByEmpId(String custId) {
 		createConnection();
 		String customerName = null;
@@ -112,7 +253,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 			rs = ps.executeQuery();
 			if (rs.next()) {
 				customerName = rs.getString("name");
-				System.out.println(customerName + " in dao");// debug
+				// System.out.println("[DAO] CustomerName: " + customerName);
 			}
 
 		} catch (SQLException sqlex) {
@@ -153,4 +294,5 @@ public class CustomerDAOImpl implements CustomerDAO {
 			}
 		}
 	}
+
 }

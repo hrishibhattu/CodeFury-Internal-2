@@ -20,7 +20,6 @@ import org.json.simple.parser.ParseException;
 
 import com.toyodo.model.Invoice;
 import com.toyodo.model.Order;
-import com.toyodo.model.Quote;
 import com.toyodo.service.EmployeeService;
 import com.toyodo.service.ExternalService;
 import com.toyodo.service.impl.EmployeeServiceImpl;
@@ -127,18 +126,20 @@ public class EmployeeController extends HttpServlet {
 			// convert the list of the products (product_id) to string type
 			Set<String> batchProduct = productQuantity.keySet();
 			String listOfProduct = "";
+			int quantity = 0;
 			for (String list : batchProduct) {
 				listOfProduct += list + "  ";
 				// add quantity and include GST
 
 				productPrice = external.getProductsDetails(list).getPrice();
-				gst = external.calculateGSTRate(productPrice);
+				quantity = productQuantity.get(list);
+				gst = external.calculateGSTRate(productPrice, quantity);
 				totalGSTAmount = external.calculateTotalGSTAmmount(totalGSTAmount, gst);
-				System.out.println("Product and GST " + productPrice + " " + gst + " | ");
-				System.out.println("Total GST: " + totalGSTAmount);
+				
 			}
+			System.out.println("Product and GST " + productPrice + " " + gst + " | ");
+			System.out.println("Total GST: " + totalGSTAmount);
 
-//			System.out.println("List " + listOfProduct);
 
 			System.out.println(customerID + " name: " + customerName);
 
@@ -149,8 +150,6 @@ public class EmployeeController extends HttpServlet {
 			double totalInvoiceValue;
 			totalInvoiceValue = external.calculateTotalInvoiceValue(productPrice, shippingCost, totalGSTAmount);
 
-//			Quote quote = new Quote(orderDate, customerID, customerName, customerGSTNo, customerShippingAddress,
-//					customerCity, customerPhone, customerEmail, customerPincode, shippingCost, totalOrderValue, status);
 			Order order = new Order(orderDate, orderDatetime, customerID, customerName, customerShippingAddress,
 					listOfProduct, productQuantity, totalOrderValue, shippingCost, shippingAgency, status);
 			Invoice invoice = new Invoice(invoiceDate, orderDatetime, customerID, customerName, listOfProduct, gst,
@@ -175,7 +174,7 @@ public class EmployeeController extends HttpServlet {
 				rd.forward(request, response);
 			}
 		}
-//		java.sql.Date.valueOf( todayLocalDate );
+
 		// handle request from invoice page
 		if (action.equals("invoice")) {
 			String getOrderDate = request.getParameter("orderDate");

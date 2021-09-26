@@ -65,14 +65,14 @@ public class EmployeeImportProducts extends HttpServlet {
 		Part filePart = request.getPart("importFile");
 		String fileName = filePart.getSubmittedFileName();
 		for (Part part : request.getParts()) {
-			part.write("/Users/hrishikesh/Developer/hsbc-training/" + fileName);
+			part.write("C:\\Users\\HP\\Desktop\\Sample\\" + fileName);
 		}
 		try {
 			JSONParser parser = new JSONParser();
 			JSONArray products;
 //			path
 			products = (JSONArray) parser
-					.parse(new FileReader("/Users/hrishikesh/Developer/hsbc-training/" + fileName));
+					.parse(new FileReader("C:\\Users\\HP\\Desktop\\Sample\\" + fileName));
 
 			// Create a map with frequency counts of product_id's
 			for (Object o : products) {

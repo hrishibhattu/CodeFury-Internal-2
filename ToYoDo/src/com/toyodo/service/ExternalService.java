@@ -14,7 +14,7 @@ public interface ExternalService {
 
 	List<Products> listProducts(String productID);
 
-	double calculateGSTRate(double price);
+	double calculateGSTRate(double price, int quantity);
 
 	double calculateTotalGSTAmmount(double totalGSTAmount, double gst);
 

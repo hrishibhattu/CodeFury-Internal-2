@@ -34,8 +34,8 @@ public class ExternalServiceImpl implements ExternalService {
 	}
 
 	@Override
-	public double calculateGSTRate(double price) {
-		return externalDAO.calculateGSTRate(price);
+	public double calculateGSTRate(double price, int quantity) {
+		return externalDAO.calculateGSTRate(price, quantity);
 	}
 
 	@Override

@@ -6,7 +6,6 @@ import com.toyodo.model.Employee;
 import com.toyodo.model.Invoice;
 import com.toyodo.model.Order;
 import com.toyodo.model.Products;
-import com.toyodo.model.Quote;
 
 public interface EmployeeService {
 	String employeeLogin(Employee employeeLogin);
@@ -16,10 +15,6 @@ public interface EmployeeService {
 	int createQuote(Order order);
 
 	List<Products> listProducts();
-
-//	int createQuote(Quote quote);
-
-//	List<Quote> viewQuote();
 
 	public void importProducts(List<Products> products);
 

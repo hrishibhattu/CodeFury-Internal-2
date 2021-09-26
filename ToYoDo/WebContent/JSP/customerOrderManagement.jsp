@@ -1,19 +1,35 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%@page import="com.toyodo.service.impl.CustomerServiceImpl"%>
+<%@page import="com.toyodo.service.CustomerService"%>
 <%@page
 	import="java.util.*, com.toyodo.utils.*,java.text.*, java.sql.Timestamp, com.toyodo.notification.*,com.toyodo.model.Customer"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Order Management Dashboard</title>
-
+<title>Dashboard</title>
 <link href="/ToYoDo/CSS/layout.css" rel="stylesheet" type="text/css"
 	media="all" />
+<link href="/ToYoDo/CSS/style.css" rel="stylesheet" type="text/css"
+	media="all" />
 <link rel="stylesheet"
-	href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+	href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<style type="text/css">
+.card 
+</style>
+
 </head>
+
 <body>
 	<%
 	HttpSession httpSession = request.getSession(false);
@@ -29,51 +45,75 @@
 
 
 	<div id="header">
-		<h1>
-			Order Management Dashboard
-			<%=customerID%></h1>
+		<%@include file="/WEB-INF/nav/customerDashboard.html"%>
 	</div>
-	<div id="sidebar-left">Left</div>
-	<div id="main">
-		<div id="detailsDisplay">
-			<%
-			CustomerServiceImpl cservice = new CustomerServiceImpl();
+	<div id="sidebar-left">
+	
+	<%
+			CustomerService customerService = new CustomerServiceImpl();
 			Date now = new Date();
 			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			Date currentAccess = new Date(httpSession.getLastAccessedTime());
-			String lastAccess = cservice.getLastAccessTime(customerID, formatter.format(currentAccess));
+			String lastAccess = customerService.getLastAccessTime(customerID, formatter.format(currentAccess));
 			%>
-			<div id="details">
-				<center>
-					<h1>Employee Details</h1>
-					<br>
-					<table class="container">
-						<thead>
-							<tr>
-								<th>Customer Id</th>
-								<td><%=customerID%></td>
-							</tr>
-							<tr>
-								<th>Customer Name</th>
-								<td><%=cservice.getCustomerName(customerID)%></td>
-							</tr>
-							<tr>
-								<th>Current Access</th>
-								<td><%=formatter.format(currentAccess)%></td>
-							</tr>
-							<tr>
-								<th>Last Accessed</th>
-								<td><%=lastAccess%></td>
-							</tr>
-							<tr>
-						</thead>
-					</table>
-				</center>
+	<%@include file="/WEB-INF/nav/customerSidebar.html"%>
+	</div>
+	<div id="main">
+		<div id="detailsDisplay">
+		<div class="row">
+			<div class="col-sm-6">
+				<div class="card shadow">
+					<div class="card-body">
+						<h5 class="card-title">Last Login Details</h5>
+						<div class="card-text">
+						<table class="container card-text">
+							<thead>
+								<tr>
+									<th>Current Access</th>
+									<td><%=formatter.format(currentAccess)%></td>
+								</tr>
+								<tr>
+									<th>Last Accessed</th>
+									<td><%=lastAccess%></td>
+								</tr>
+								<tr>
+							</thead>
+						</table>
+						</div>
+
+					</div>
+				</div>
 			</div>
+			<div class="col-sm-6">
+				<div class="card shadow">
+					<div class="card-body">
+						<h5 class="card-title">Profile</h5>
+						<p class="card-text">
+						<table class="container">
+							<thead>
+								<tr>
+									<th>Customer ID</th>
+									<td><%=customerID%></td>
+								</tr>
+								<tr>
+									<th>Customer Name</th>
+									<td><%=customerService.searchCustomer(customerID).getName()%></td>
+								</tr>
+
+							</thead>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		
 
 		</div>
 	</div>
-	<div id="footer">Footer</div>
+	<div id="footer">
+	Copyright &copy; 2021 ToYoDo <br /> All rights reserved. Powered by
+		JAVATAR
+	</div>
 
 </body>
 </html>

@@ -13,6 +13,7 @@ public class Order {
 	private String customerShippingAddress;
 	private String listOfProducts;
 	private Map<String, Integer> mapOfProducts;
+
 	public Map<String, Integer> getMapOfProducts() {
 		return mapOfProducts;
 	}
@@ -114,9 +115,14 @@ public class Order {
 		this.status = status;
 	}
 
+	public Order(Timestamp orderDatetime) {
+		super();
+		this.orderDatetime = orderDatetime;
+	}
+
 	public Order(String orderID, Date orderDate, Timestamp orderDatetime, String customerID, String customerName,
-			String customerShippingAddress, String listOfProducts, Map<String, Integer> mapOfProducts, double totalOrderValue, double shippingCost,
-			String shippingAgency, String status) {
+			String customerShippingAddress, String listOfProducts, Map<String, Integer> mapOfProducts,
+			double totalOrderValue, double shippingCost, String shippingAgency, String status) {
 		super();
 		this.orderID = orderID;
 		this.orderDate = orderDate;
@@ -133,8 +139,8 @@ public class Order {
 	}
 
 	public Order(Date orderDate, Timestamp orderDatetime, String customerID, String customerName,
-			String customerShippingAddress, String listOfProducts, Map<String, Integer> mapOfProducts, double totalOrderValue, double shippingCost,
-			String shippingAgency, String status) {
+			String customerShippingAddress, String listOfProducts, Map<String, Integer> mapOfProducts,
+			double totalOrderValue, double shippingCost, String shippingAgency, String status) {
 		super();
 		this.orderDate = orderDate;
 		this.orderDatetime = orderDatetime;
@@ -143,6 +149,36 @@ public class Order {
 		this.customerShippingAddress = customerShippingAddress;
 		this.listOfProducts = listOfProducts;
 		this.mapOfProducts = mapOfProducts;
+		this.totalOrderValue = totalOrderValue;
+		this.shippingCost = shippingCost;
+		this.shippingAgency = shippingAgency;
+		this.status = status;
+	}
+
+	public Order(String orderID, Date orderDate, Timestamp orderDatetime, String customerID, String customerName,
+			String customerShippingAddress, String listOfProducts, double totalOrderValue, double shippingCost,
+			String shippingAgency, String status) {
+		super();
+		this.orderID = orderID;
+		this.orderDate = orderDate;
+		this.orderDatetime = orderDatetime;
+		this.customerID = customerID;
+		this.customerName = customerName;
+		this.customerShippingAddress = customerShippingAddress;
+		this.listOfProducts = listOfProducts;
+		this.totalOrderValue = totalOrderValue;
+		this.shippingCost = shippingCost;
+		this.shippingAgency = shippingAgency;
+		this.status = status;
+	}
+
+	public Order(String orderID, Date orderDate, Timestamp orderDatetime, String customerID, double totalOrderValue,
+			double shippingCost, String shippingAgency, String status) {
+		super();
+		this.orderID = orderID;
+		this.orderDate = orderDate;
+		this.orderDatetime = orderDatetime;
+		this.customerID = customerID;
 		this.totalOrderValue = totalOrderValue;
 		this.shippingCost = shippingCost;
 		this.shippingAgency = shippingAgency;
