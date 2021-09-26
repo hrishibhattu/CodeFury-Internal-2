@@ -73,7 +73,7 @@ public class EmployeeController extends HttpServlet {
 			String getOrderDate = request.getParameter("orderDate");
 			String typeOfGST = "inter-state";
 			// get the instance of Date class
-			// order placed at
+			// (order placed on)
 			java.util.Date utilDate = new java.util.Date();
 			java.sql.Timestamp orderDatetime = new java.sql.Timestamp(utilDate.getTime());
 			System.out.println("Timestamp time: " + orderDatetime);
@@ -138,7 +138,7 @@ public class EmployeeController extends HttpServlet {
 				System.out.println("Total GST: " + totalGSTAmount);
 			}
 
-			System.out.println("List " + listOfProduct);
+//			System.out.println("List " + listOfProduct);
 
 			System.out.println(customerID + " name: " + customerName);
 

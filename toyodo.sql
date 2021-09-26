@@ -53,7 +53,7 @@ CREATE TABLE `customer_order_invoice` (
   `customer_id` varchar(50) NOT NULL,
   `order_id` int NOT NULL,
   `invoice_id` int DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 DROP TABLE IF EXISTS `employee`;
 CREATE TABLE `employee` (
@@ -87,17 +87,17 @@ CREATE TABLE `last_login_datetime` (
 
 DROP TABLE IF EXISTS `last_login_details`;
 CREATE TABLE `last_login_details` (
-  `login_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `login_id` varchar(50) CHARACTER SET utf8mb4 NOT NULL,
   `logintime` datetime NOT NULL,
   PRIMARY KEY (`login_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4  ;
 
 DROP TABLE IF EXISTS `order`;
 CREATE TABLE `order` (
   `order_id` int NOT NULL AUTO_INCREMENT,
   `order_date` date NOT NULL,
   `order_datetime` datetime NOT NULL,
-  `customer_id` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `customer_id` varchar(50) CHARACTER SET latin1 NOT NULL,
   `total_order_value` double NOT NULL,
   `shipping_cost` double NOT NULL,
   `shipping_agency` varchar(50) NOT NULL,
@@ -109,9 +109,9 @@ CREATE TABLE `order` (
 DROP TABLE IF EXISTS `order_product_util`;
 CREATE TABLE `order_product_util` (
   `order_id` int DEFAULT NULL,
-  `product_id` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `product_id` varchar(10) CHARACTER SET utf8mb4 DEFAULT NULL,
   `quantity` int DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4  ;
 
 DROP TABLE IF EXISTS `products`;
 CREATE TABLE `products` (
@@ -127,7 +127,7 @@ CREATE TABLE `quote` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4  ;
 
 INSERT INTO `company` (`company_name`, `address`, `city`, `gst_number`) VALUES
 ('Amazon Seller Services Pvt. Ltd.', 'Sri Kanteshwara Nagar, Mahalakshmi Layout', 'Bengaluru', '29AAICA3918J1ZE'),
