@@ -25,6 +25,10 @@ public interface EmployeeDAO {
 
 	public void importProducts(List<Products> products);
 
+	String getLastAccessTime(String employeeId, String currentAccessTime);
+
+	String getEmployeeDetailsByEmpId(String empId);
+
 	int createInvoice(Invoice invoice);
 
 	void closeConnection();

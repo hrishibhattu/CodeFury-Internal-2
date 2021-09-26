@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -231,6 +233,87 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 			}
 		}
 		return listProducts;
+	}
+
+	@Override
+	public String getEmployeeDetailsByEmpId(String empId) {
+		createConnection();
+		String employeeName = null;
+		try {
+			String query = "select name from `employee` WHERE `employee_id` = ?";
+			ps = con.prepareStatement(query);
+			ps.setString(1, empId);
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				employeeName = rs.getString("name");
+				System.out.println(employeeName + " in dao");// debug
+			}
+
+		} catch (SQLException sqlex) {
+			System.out.println(sqlex);
+		} finally {
+			if (ps != null) {
+				try {
+					ps.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return employeeName;
+	}
+
+	@Override
+	public String getLastAccessTime(String employeeId, String currentAccess) {
+		String lastLoginTime = "Accessing for first time";
+		createConnection();
+		try {
+			String query = "select logintime from `last_login_details` WHERE `login_id` = ?";
+			ps = con.prepareStatement(query);
+			ps.setString(1, employeeId);
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				lastLoginTime = rs.getString("logintime");
+				System.out.println(lastLoginTime + " in dao");// debug
+				String updateQuery = "update `last_login_details` set logintime=? where login_id = ?";
+				ps = con.prepareStatement(updateQuery);
+				ps.setString(1, currentAccess);
+				ps.setString(2, employeeId);
+				ps.executeUpdate();
+			} else {
+				String currentAccessTime = currentAccess;
+				String insQuery = "insert into `last_login_details` values(?,?)";
+				ps = con.prepareStatement(insQuery);
+				ps.setString(1, employeeId);
+				ps.setString(2, currentAccessTime);
+				ps.execute();
+			}
+		} catch (SQLException sqlex) {
+			System.out.println(sqlex);
+		} finally {
+			if (ps != null) {
+				try {
+					ps.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return lastLoginTime;
 	}
 
 //	@Override

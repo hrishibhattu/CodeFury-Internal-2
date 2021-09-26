@@ -3,8 +3,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%@page
-	import="java.util.*, java.io.*, com.toyodo.utils.*, com.toyodo.notification.*,com.toyodo.model.Employee, com.toyodo.model.Quote"%>
-
+	import="java.util.*, java.io.*,java.text.*, java.sql.Timestamp, com.toyodo.utils.*, com.toyodo.notification.*,com.toyodo.model.Employee"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,6 +12,8 @@
 
 <link href="/ToYoDo/CSS/layout.css" rel="stylesheet" type="text/css"
 	media="all" />
+<link rel="stylesheet"
+	href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
 <link rel="stylesheet"
 	href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
 <link rel="stylesheet"
@@ -52,7 +53,45 @@
 		<%@include file="/WEB-INF/modal/quote.jsp"%>
 	</div>
 
-	<div id="main">Last login details and contents goes here.</div>
+	<div id="main">
+		<div id="detailsDisplay">
+			<%
+			EmployeeServiceImpl eservice = new EmployeeServiceImpl();
+			Date now = new Date();
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			Date currentAccess = new Date(httpSession.getLastAccessedTime());
+			String lastAccess = eservice.getLastAccessTime(employeeID, formatter.format(currentAccess));
+			%>
+			<div id="details">
+				<center>
+					<h1>Employee Details</h1>
+					<br>
+					<table class="container">
+						<thead>
+							<tr>
+								<th>Employee Id</th>
+								<td><%=employeeID%></td>
+							</tr>
+							<tr>
+								<th>Employee Name</th>
+								<td><%=eservice.getEmployeeName(employeeID)%></td>
+							</tr>
+							<tr>
+								<th>Current Access</th>
+								<td><%=formatter.format(currentAccess)%></td>
+							</tr>
+							<tr>
+								<th>Last Accessed</th>
+								<td><%=lastAccess%></td>
+							</tr>
+							<tr>
+						</thead>
+					</table>
+				</center>
+			</div>
+
+		</div>
+	</div>
 	<div id="footer">
 		Copyright &copy; 2021 ToYoDo <br /> All rights reserved. Powered by
 		JAVATAR

@@ -14,4 +14,8 @@ public interface CustomerDAO {
 //	List<Quote> viewQuote();
 //	List<Order> listOrder();
 	void closeConnection();
+
+	String getLastAccessTime(String customerId, String currentAccessTime);
+
+	String getCustomerDetailsByEmpId(String custId);
 }

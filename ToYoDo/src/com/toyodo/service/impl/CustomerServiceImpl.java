@@ -17,4 +17,14 @@ public class CustomerServiceImpl implements CustomerService {
 	public String customerLogin(Customer customerLogin) {
 		return customerDAO.customerLogin(customerLogin);
 	}
+
+	@Override
+	public String getCustomerName(String custId) {
+		return customerDAO.getCustomerDetailsByEmpId(custId);
+	}
+
+	@Override
+	public String getLastAccessTime(String custId, String currentAccessTime) {
+		return customerDAO.getLastAccessTime(custId, currentAccessTime);
+	}
 }

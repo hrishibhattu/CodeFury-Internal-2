@@ -24,4 +24,8 @@ public interface EmployeeService {
 	public void importProducts(List<Products> products);
 
 	int createInvoice(Invoice invoice);
+
+	public String getEmployeeName(String employeeId);
+
+	String getLastAccessTime(String employeeId, String currentAccessTime);
 }
