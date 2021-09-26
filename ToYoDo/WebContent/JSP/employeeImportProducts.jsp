@@ -27,14 +27,14 @@
 <body>
 
 	<%
-	HttpSession httpSession = request.getSession(false);
-	String employeeID = (String) httpSession.getAttribute("loginID");
-	System.out.println(employeeID);
-	if (employeeID == null || httpSession.isNew()) {
-		RequestDispatcher rd = request.getRequestDispatcher("/JSP/index.jsp");
-		request.setAttribute("unauthorised_msg", Notify.UNAUTHORISED);
-		rd.forward(request, response);
-	}
+		HttpSession httpSession = request.getSession(false);
+		String employeeID = (String) httpSession.getAttribute("loginID");
+		System.out.println(employeeID);
+		if (employeeID == null || httpSession.isNew()) {
+			RequestDispatcher rd = request.getRequestDispatcher("/JSP/index.jsp");
+			request.setAttribute("unauthorised_msg", Notify.UNAUTHORISED);
+			rd.forward(request, response);
+		}
 	%>
 
 	<div id="header">
@@ -43,27 +43,44 @@
 	</div>
 	<div id="sidebar-left">
 		<%
-		EmployeeService employeeService = new EmployeeServiceImpl();
+			EmployeeService employeeService = new EmployeeServiceImpl();
 		%>
 		<%@include file="/WEB-INF/nav/sidebarNav.html"%>
 	</div>
 	<div id="main">
-		<form class="row g-3" method="POST"
-			action="/ToYoDo/EmployeeImportProducts" enctype="multipart/form-data">
-			<div class="mb-3">
-				<label for="formFile" class="form-label">Select JSON file to
-					import products</label> <input class="form-control" type="file"
-					accept="application/JSON" id="importFile" name="importFile">
+
+
+		<div class="card mb-3">
+			<img class="card-img-top" src="/ToYoDo/IMG/img (2).jpg" width="100px"
+				height="300px" alt="Card image cap">
+			<div class="card-img-overlay">
+				<h5 class="card-title">Card title</h5>
+				<div class="card-text">
+				<form class="row g-3" method="POST"
+					action="/ToYoDo/EmployeeImportProducts"
+					enctype="multipart/form-data">
+					<div class="mb-3 custom-file">
+						<label for="formFile" class="form-label">Select JSON file
+							to import products</label> <input class="form-control" type="file"
+							accept="application/JSON" id="importFile" name="importFile">
+					</div>
+					<div class="col-12">
+						<button type="submit" class="btn btn-primary">Submit</button>
+					</div>
+				</form>
+
+
+				</div>
+				<p class="card-text">
+					<label class="form-label"> Succeeded: <%=request.getAttribute("succeeded")%>
+					</label> <br />
+					<label class="form-label"> Failed: <%=request.getAttribute("failed")%>
+					</label>
+				</p>
 			</div>
-			<div class="col-12">
-				<button type="submit" class="btn btn-primary">Submit</button>
-			</div>
-			<div class="row g-3">
-				<label class="form-label"> Succeeded: <%=request.getAttribute("succeeded")%>
-				</label> <label class="form-label"> Failed: <%=request.getAttribute("failed")%>
-				</label>
-			</div>
-		</form>
+		</div>
+
+
 
 	</div>
 

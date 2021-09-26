@@ -67,27 +67,10 @@
 					<hr />
 
 					Customer Name/ID :
-					<%=invoice.getCustomerName()%>
 					<%=invoice.getCustomerID()%>
 					<hr />
 					Order Details
 					<table class="table table-hover table-sm">
-
-
-						<%
-						List<Products> products = external.listProducts(invoice.getListOfProducts());
-						for (Products product : products) {
-						%>
-						<tr>
-							<th><%=product.getProductID()%></th>
-							<td><%=product.getName()%></td>
-							<td>&#8377;<%=product.getPrice()%></td>
-							<td><%=product.getCategory()%></td>
-						</tr>
-
-						<%
-						}
-						%>
 
 					</table>
 					<hr />

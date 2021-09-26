@@ -20,9 +20,9 @@ public class DBConnection {
 	public static Connection createConnection() {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-//			read a properties file with a Resource Bundle
+			//	read a properties file with a Resource Bundle
 			resource = ResourceBundle.getBundle("com.toyodo.utils.dbresource");
-//			establishes a database connection
+			//	establishes a database connection
 			con = DriverManager.getConnection(resource.getString("db.url"), resource.getString("db.id"), resource.getString("db.password"));
 		} catch (ClassNotFoundException | SQLException ex) {
 			System.out.println(ex);

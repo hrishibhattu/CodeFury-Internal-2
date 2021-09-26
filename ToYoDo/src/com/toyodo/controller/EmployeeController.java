@@ -66,7 +66,7 @@ public class EmployeeController extends HttpServlet {
 			String getOrderDate = request.getParameter("orderDate");
 			String typeOfGST = "inter-state";
 			// get the instance of Date class
-			// order placed at
+			// (order placed on)
 			java.util.Date utilDate = new java.util.Date();
 			java.sql.Timestamp orderDatetime = new java.sql.Timestamp(utilDate.getTime());
 			System.out.println("Timestamp time: " + orderDatetime);
@@ -85,10 +85,11 @@ public class EmployeeController extends HttpServlet {
 			double totalOrderValue = Double.parseDouble(request.getParameter("totalOrderValue"));
 			System.out.println(totalOrderValue);
 			
+			String productQty = request.getParameter("product-quantity-map");
+			System.out.println("product-quantity-map " + productQty);
 			
-			
-			int quantity = Integer.parseInt(request.getParameter("quantity"));
-			System.out.println("Quantity: " + quantity);
+//			int quantity = Integer.parseInt(request.getParameter("quantity"));
+//			System.out.println("Quantity: " + quantity);
 
 			ExternalService external = new ExternalServiceImpl();
 			EmployeeService employeeService = new EmployeeServiceImpl();
@@ -116,7 +117,7 @@ public class EmployeeController extends HttpServlet {
 				System.out.println("Total GST: " + totalGSTAmount);
 			}
 
-			System.out.println("List " + listOfProduct);
+//			System.out.println("List " + listOfProduct);
 
 			System.out.println(customerID + " name: " + customerName);
 
@@ -131,7 +132,7 @@ public class EmployeeController extends HttpServlet {
 //					customerCity, customerPhone, customerEmail, customerPincode, shippingCost, totalOrderValue, status);
 			Order order = new Order(orderDate, orderDatetime, customerID, customerName, customerShippingAddress,
 					listOfProduct, totalOrderValue, shippingCost, shippingAgency, status);
-			Invoice invoice = new Invoice(invoiceDate, orderDatetime, customerID, customerName, listOfProduct, gst,
+			Invoice invoice = new Invoice(invoiceDate, orderDatetime, customerID, gst,
 					typeOfGST, totalGSTAmount, totalInvoiceValue, status);
 
 			int quoteStatus = employeeService.createQuote(order);

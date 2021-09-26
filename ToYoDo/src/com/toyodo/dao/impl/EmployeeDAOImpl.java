@@ -30,7 +30,6 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 
 	private List<Order> listOrder = new ArrayList<Order>();
 	private List<Products> listProducts = new ArrayList<Products>();
-	private List<Quote> listQuote = new ArrayList<Quote>();
 
 	public static EmployeeDAOImpl createObject() {
 		if (employeeDAOImpl == null) {
@@ -82,8 +81,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 	@Override
 	public List<Order> listOrder() {
 		createConnection();
-		// clear the previous record on every request to avoid appending previous list
-		// of orders
+		//	clear the previous record on every request to avoid appending previous list of orders
 		if (!listOrder.isEmpty())
 			listOrder.clear();
 
@@ -138,16 +136,11 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 		ResultSet rs = null;
 
 		final String strsql = "INSERT INTO `order`(`order_date`, `order_datetime`, `customer_id`, `total_order_value`, `shipping_cost`, `shipping_agency`, `status`) VALUES (?, ?, ?, ?, ?, ?, ?)";
-//		String utilTable = "INSERT INTO `customer_order_invoice` (`customer_id`) VALUES (?)";
-//		String utilTable = "INSERT INTO `customer_order_invoice` (`customer_id`) VALUES (?)";
 		try {
 			ps = con.prepareStatement(strsql);
 			ps.setDate(1, order.getOrderDate());
 			ps.setTimestamp(2, order.getOrderDatetime());
 			ps.setString(3, order.getCustomerID());
-//			ps.setString(4, order.getCustomerName());
-//			ps.setString(5, order.getCustomerShippingAddress());
-//			ps.setString(6, order.getListOfProducts());
 			ps.setDouble(4, order.getTotalOrderValue());
 			ps.setDouble(5, order.getShippingCost());
 			ps.setString(6, order.getShippingAgency());
@@ -156,23 +149,27 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 			if (ps.executeUpdate() > 0) {
 				System.out.println("Done");
 			}
-			String getOrderId = "SELECT `order_id` FROM `order` WHERE `order_datetime` = "
-					+ order.getOrderDatetime().toString();
-			ResultSet rs2 = ps.executeQuery(getOrderId);
-			int order_id = 0;
-			while (rs2.next()) {
-				order_id = rs2.getInt("order_id");
-			}
-			String listOfProducts = order.getListOfProducts();
-			String[] products = listOfProducts.split(" ");
-			PreparedStatement ps1;
-			for (String product : products) {
-				String insertProduct = "INSERT INTO `order_product_util` (order_id, product_id) VALUES (?, ?)";
-				ps1 = con.prepareStatement(insertProduct);
-				ps1.setInt(1, order_id);
-				ps1.setString(2, product);
-				ps1.executeUpdate();
-			}
+			
+//			Timestamp orderDatetime = order.getOrderDatetime();
+//			String getOrderId = "SELECT `order_id` FROM `order` WHERE `order_datetime` = ?";
+//			ps = con.prepareStatement(getOrderId);
+//			ps.setTimestamp(1, orderDatetime);
+//			ResultSet rs2 = ps.executeQuery(getOrderId);
+//			int order_id = 0;
+//			while (rs2.next()) {
+//				order_id = rs2.getInt("order_id");
+//			}
+//			String listOfProducts = order.getListOfProducts();
+//			String[] products = listOfProducts.split(" ");
+//			PreparedStatement ps1;
+//			for (String product : products) {
+//				String insertProduct = "INSERT INTO `order_product_util` (order_id, product_id) VALUES (?, ?)";
+//				ps1 = con.prepareStatement(insertProduct);
+//				ps1.setInt(1, order_id);
+//				ps1.setString(2, product);
+//				ps1.executeUpdate();
+//			}
+			return 1;
 
 		} catch (SQLException sqlex) {
 			System.out.println(sqlex);
@@ -272,7 +269,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 
 	@Override
 	public String getLastAccessTime(String employeeId, String currentAccess) {
-		String lastLoginTime = "Accessing for first time";
+		String lastLoginTime = "Accessing for the first time";
 		createConnection();
 		try {
 			String query = "select logintime from `last_login_details` WHERE `login_id` = ?";
@@ -281,15 +278,16 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 			rs = ps.executeQuery();
 			if (rs.next()) {
 				lastLoginTime = rs.getString("logintime");
-				System.out.println(lastLoginTime + " in dao");// debug
-				String updateQuery = "update `last_login_details` set logintime=? where login_id = ?";
+				// debug
+				System.out.println(lastLoginTime + " in dao");
+				String updateQuery = "UPDATE `last_login_details` SET logintime=? WHERE login_id = ?";
 				ps = con.prepareStatement(updateQuery);
 				ps.setString(1, currentAccess);
 				ps.setString(2, employeeId);
 				ps.executeUpdate();
 			} else {
 				String currentAccessTime = currentAccess;
-				String insQuery = "insert into `last_login_details` values(?,?)";
+				String insQuery = "INSERT INTO `last_login_details` VALUES (?, ?)";
 				ps = con.prepareStatement(insQuery);
 				ps.setString(1, employeeId);
 				ps.setString(2, currentAccessTime);

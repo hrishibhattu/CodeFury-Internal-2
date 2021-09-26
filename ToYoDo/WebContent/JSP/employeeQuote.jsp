@@ -201,6 +201,8 @@
 										id="totalOrderValue" name="totalOrderValue" readonly>
 								</div>
 							</div>
+									MAP <input type="text" class="form-control" id="product-quantity-map"
+			name="product-quantity-map">
 						</div>
 						<br />
 
@@ -211,8 +213,7 @@
 			</div>
 		</div>
 
-		MAP <input type="text" class="form-control" id="product-quantity-map"
-			name="product-quantity-map">
+
 
 
 	</div>

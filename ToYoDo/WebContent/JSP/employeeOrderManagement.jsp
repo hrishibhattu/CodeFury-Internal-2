@@ -12,8 +12,8 @@
 
 <link href="/ToYoDo/CSS/layout.css" rel="stylesheet" type="text/css"
 	media="all" />
-<link rel="stylesheet"
-	href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+<link href="/ToYoDo/CSS/style.css" rel="stylesheet" type="text/css"
+	media="all" />
 <link rel="stylesheet"
 	href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
 <link rel="stylesheet"
@@ -29,14 +29,14 @@
 <body>
 
 	<%
-	HttpSession httpSession = request.getSession(false);
-	String employeeID = (String) httpSession.getAttribute("loginID");
-	System.out.println(employeeID);
-	if (employeeID == null || httpSession.isNew()) {
-		RequestDispatcher rd = request.getRequestDispatcher("/JSP/index.jsp");
-		request.setAttribute("unauthorised_msg", Notify.UNAUTHORISED);
-		rd.forward(request, response);
-	}
+		HttpSession httpSession = request.getSession(false);
+		String employeeID = (String) httpSession.getAttribute("loginID");
+		System.out.println(employeeID);
+		if (employeeID == null || httpSession.isNew()) {
+			RequestDispatcher rd = request.getRequestDispatcher("/JSP/index.jsp");
+			request.setAttribute("unauthorised_msg", Notify.UNAUTHORISED);
+			rd.forward(request, response);
+		}
 	%>
 
 
@@ -47,35 +47,25 @@
 	</div>
 	<div id="sidebar-left">
 		<%
-		EmployeeService employeeService = new EmployeeServiceImpl();
+			EmployeeService employeeService = new EmployeeServiceImpl();
+			Date now = new Date();
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			Date currentAccess = new Date(httpSession.getLastAccessedTime());
+			String lastAccess = employeeService.getLastAccessTime(employeeID, formatter.format(currentAccess));
 		%>
 		<%@include file="/WEB-INF/nav/sidebarNav.html"%>
 		<%@include file="/WEB-INF/modal/quote.jsp"%>
 	</div>
 
 	<div id="main">
-		<div id="detailsDisplay">
-			<%
-			EmployeeServiceImpl eservice = new EmployeeServiceImpl();
-			Date now = new Date();
-			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-			Date currentAccess = new Date(httpSession.getLastAccessedTime());
-			String lastAccess = eservice.getLastAccessTime(employeeID, formatter.format(currentAccess));
-			%>
-			<div id="details">
-				<center>
-					<h1>Employee Details</h1>
-					<br>
-					<table class="container">
-						<thead>
-							<tr>
-								<th>Employee Id</th>
-								<td><%=employeeID%></td>
-							</tr>
-							<tr>
-								<th>Employee Name</th>
-								<td><%=eservice.getEmployeeName(employeeID)%></td>
-							</tr>
+
+		<div class="row">
+			<div class="col-sm-6">
+				<div class="card shadow">
+					<div class="card-body">
+						<h5 class="card-title">Last Login Details</h5>
+						<p class="card-text"><table class="container">
+							<thead>
 							<tr>
 								<th>Current Access</th>
 								<td><%=formatter.format(currentAccess)%></td>
@@ -85,11 +75,37 @@
 								<td><%=lastAccess%></td>
 							</tr>
 							<tr>
+						
+							</thead>
+					</table>
+						</p>
+						
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<div class="card shadow">
+					<div class="card-body">
+						<h5 class="card-title">Profile Information</h5>
+						<p class="card-text">
+
+					<table class="container">
+						<thead>
+							<tr>
+								<th>Employee Id</th>
+								<td><%=employeeID%></td>
+							</tr>
+							<tr>
+								<th>Employee Name</th>
+								<td><%=employeeService.getEmployeeName(employeeID)%></td>
+							</tr>
+						
 						</thead>
 					</table>
-				</center>
+					</p>
+					</div>
+				</div>
 			</div>
-
 		</div>
 	</div>
 	<div id="footer">

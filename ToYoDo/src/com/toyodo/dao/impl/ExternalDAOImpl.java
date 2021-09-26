@@ -1,6 +1,5 @@
 package com.toyodo.dao.impl;
 
-import java.security.PKCS12Attribute;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -181,21 +180,14 @@ public class ExternalDAOImpl implements ExternalDAO {
 			if (rs.next()) {
 
 				String status = rs.getString("status");
-				// To Be Checked [PENDING TASK]
-//				String listOfProducts = rs.getString("list_of_products");
-				PreparedStatement ps1 = con.prepareStatement("SELECT * FROM `order` WHERE `order_datetime`=" + orderDatetime);
-				ResultSet rs1 = ps1.executeQuery();
-				String orderID = "";
-				if(rs1.next()) {
-					orderID = rs1.getString("order_id");
-				}
-				String getProductsQuery = "SELECT * FROM `order_product_util` WHERE `order_id`=" + orderID;
-				Statement stmt = con.createStatement();
-				ResultSet rs2 = stmt.executeQuery(getProductsQuery);
-				String listOfProducts = "";
-				while (rs2.next()) {
-					listOfProducts += " " + rs2.getString("product_id");
-				}
+//				PreparedStatement ps1 = con.prepareStatement("SELECT * FROM `order` WHERE `order_datetime`=" + orderDatetime);
+//				ResultSet rs1 = ps1.executeQuery();
+//				String orderID = "";
+//				if(rs1.next()) {
+//					orderID = rs1.getString("order_id");
+//				}
+//				String getProductsQuery = "SELECT * FROM `order_product_util` WHERE `order_id`=" + orderID;
+//				Statement stmt = con.createStatement();
 				java.util.Date today = new java.util.Date();
 				System.out.println("Test today with orderDate " + today);
 				if ((status.equals("Approved") || status.equals("Completed")) && !(orderDate.equals(today))) {
@@ -204,8 +196,6 @@ public class ExternalDAOImpl implements ExternalDAO {
 					invoice.setInvoiceDate(rs.getDate("invoice_date"));
 					invoice.setOrderDatetime(rs.getTimestamp("order_datetime"));
 					invoice.setCustomerID(rs.getString("customer_id"));
-//					invoice.setCustomerName(rs.getString("customer_name"));
-					invoice.setListOfProducts(listOfProducts);
 					invoice.setGst(rs.getDouble("gst"));
 					invoice.setTypeOfGST(rs.getString("type_of_gst"));
 					invoice.setTotalGSTAmount(rs.getDouble("total_gst_amount"));
